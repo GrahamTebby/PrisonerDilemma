@@ -12,8 +12,10 @@ namespace PrisonerDilemma
 {
     public partial class Form1 : Form
     {
-        Bitmap red, blue;
+        Bitmap red, blue, fieldBmp;
         float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, 101 };
+        Graphics g;
+        int x = 0, y = 0;
 
         public Form1()
         {
@@ -27,27 +29,71 @@ namespace PrisonerDilemma
             frameRateTrackBar.SmallChange = 1;
 
             // Initialise the bitmaps for the trps picture box
+            fieldBmp = new Bitmap(fieldPbox.Width, fieldPbox.Height);
+            fieldPbox.Image = fieldBmp;
+            g = Graphics.FromImage(fieldBmp);
+            g.Clear(Color.LightBlue);
+
             red = new Bitmap(trpsPbox.Width, trpsPbox.Height);
-            blue = new Bitmap(trpsPbox.Width, trpsPbox.Height);
             Graphics gRed = Graphics.FromImage(red);
             gRed.Clear(Color.Red);
+            blue = new Bitmap(trpsPbox.Width, trpsPbox.Height);
             Graphics gBlue = Graphics.FromImage(blue);
             gBlue.Clear(Color.Blue);
-
-            // Initialise and start the timer
-            //timer1 = new Timer();
-            //timer1.Interval = 1000;
-            //timer1.Start();
+            
+            // Based on https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.backgroundworker?view=net-10.0
+            backgroundWorker1.WorkerReportsProgress = false;
+            backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
-        private void timer1Service(object sender, EventArgs e)
+        private void startBg()
+        {   // Start the asynchronous operation
+            if (!backgroundWorker1.IsBusy)
+            {
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
+
+        private void stopBg()
+        {   // Stop the asynchronous operation
+            if (backgroundWorker1.WorkerSupportsCancellation)
+            {
+                backgroundWorker1.CancelAsync();
+            }
+        }
+
+        void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {   // Do the background work here
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            while (!worker.CancellationPending)
+            {
+                playRoundAsync();
+            }
+            e.Cancel = true;
+        }
+
+         private void playRoundSync()
         {
-            playRound();
+            playRound(fieldBmp);
+            fieldPbox.Image = fieldBmp;
         }
 
-        private void playRound()
+        private void playRoundAsync()
+        {
+
+            playRound(fieldBmp);
+            this.Invoke((MethodInvoker)delegate { fieldPbox.Image = fieldBmp; });
+        }
+
+        private void playRound(Bitmap PBitmap)
         {   // It's a bit minimalist at the moment
-            trpsCbox.Checked = !trpsCbox.Checked;
+            PBitmap.SetPixel(x, y, Color.Black);
+            if (++x >= PBitmap.Width)
+            {
+                x = 0;
+                y+=2;
+            }
         }
 
         private void frameRateTrackBar_ValueChanged(object sender, EventArgs e)
@@ -58,6 +104,7 @@ namespace PrisonerDilemma
             float newFrameRate = frameRates[newPosn];
             frameRateTbox.Text = newFrameRate.ToString();
             // If the frame rate is zero, wait for another update
+            stopBg();
             if (newFrameRate == 0F)
             {
                 timer1.Stop();
@@ -75,7 +122,7 @@ namespace PrisonerDilemma
             else
             {
                 // If it's max, assign to another thread
-                // Not yet implemented
+                startBg();
             }
         }
 
@@ -96,6 +143,11 @@ namespace PrisonerDilemma
                 trpsPbox.Image = blue;
             }
         }
+        private void timer1Service(object sender, EventArgs e)
+        {
+            playRoundSync();
+        }
+
 
     }
 }

@@ -71,10 +71,11 @@
             this.alphaTbox = new System.Windows.Forms.TextBox();
             this.noiseTbox = new System.Windows.Forms.TextBox();
             this.noiseTrackBar = new System.Windows.Forms.TrackBar();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.fieldPbox = new System.Windows.Forms.PictureBox();
             this.goCBox = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.frameRateTrackBar = new System.Windows.Forms.TrackBar();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.rewardTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.temptTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.suckerTrackBar)).BeginInit();
@@ -86,7 +87,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alphaTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noiseTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fieldPbox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.frameRateTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -514,13 +515,13 @@
             this.noiseTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.noiseTrackBar.Scroll += new System.EventHandler(this.noiseTrackBar_Scroll);
             // 
-            // pictureBox1
+            // fieldPbox
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1126, 651);
-            this.pictureBox1.TabIndex = 38;
-            this.pictureBox1.TabStop = false;
+            this.fieldPbox.Location = new System.Drawing.Point(12, 12);
+            this.fieldPbox.Name = "fieldPbox";
+            this.fieldPbox.Size = new System.Drawing.Size(1126, 651);
+            this.fieldPbox.TabIndex = 38;
+            this.fieldPbox.TabStop = false;
             // 
             // goCBox
             // 
@@ -549,6 +550,10 @@
             this.frameRateTrackBar.TickFrequency = 10;
             this.frameRateTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.frameRateTrackBar.ValueChanged += new System.EventHandler(this.frameRateTrackBar_ValueChanged);
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
             // Form1
             // 
@@ -600,7 +605,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.temptTrackBar);
             this.Controls.Add(this.noiseTrackBar);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.fieldPbox);
             this.Name = "Form1";
             this.Text = "Prisoner\'s dilemma";
             ((System.ComponentModel.ISupportInitialize)(this.rewardTrackBar)).EndInit();
@@ -614,7 +619,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alphaTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.noiseTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fieldPbox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.frameRateTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -664,10 +669,11 @@
         private System.Windows.Forms.TextBox alphaTbox;
         private System.Windows.Forms.TextBox noiseTbox;
         private System.Windows.Forms.TrackBar noiseTrackBar;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox fieldPbox;
         private System.Windows.Forms.CheckBox goCBox;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TrackBar frameRateTrackBar;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 
