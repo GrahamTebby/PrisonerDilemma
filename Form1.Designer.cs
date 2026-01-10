@@ -64,7 +64,6 @@
             this.oneRoundBtn = new System.Windows.Forms.Button();
             this.frameRateTbox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.frameRateTrackBar = new System.Windows.Forms.TrackBar();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -76,6 +75,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.goCBox = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.frameRateTrackBar = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.rewardTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.temptTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.suckerTrackBar)).BeginInit();
@@ -85,10 +85,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.shapeTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.frameRateTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alphaTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noiseTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.frameRateTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -413,7 +413,7 @@
             // oneRoundBtn
             // 
             this.oneRoundBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.oneRoundBtn.Location = new System.Drawing.Point(832, 731);
+            this.oneRoundBtn.Location = new System.Drawing.Point(832, 762);
             this.oneRoundBtn.Name = "oneRoundBtn";
             this.oneRoundBtn.Size = new System.Drawing.Size(98, 23);
             this.oneRoundBtn.TabIndex = 32;
@@ -437,18 +437,6 @@
             this.label12.Size = new System.Drawing.Size(77, 17);
             this.label12.TabIndex = 33;
             this.label12.Text = "Frame rate";
-            // 
-            // frameRateTrackBar
-            // 
-            this.frameRateTrackBar.LargeChange = 10;
-            this.frameRateTrackBar.Location = new System.Drawing.Point(906, 703);
-            this.frameRateTrackBar.Margin = new System.Windows.Forms.Padding(1);
-            this.frameRateTrackBar.Maximum = 100;
-            this.frameRateTrackBar.Name = "frameRateTrackBar";
-            this.frameRateTrackBar.Size = new System.Drawing.Size(95, 45);
-            this.frameRateTrackBar.TabIndex = 34;
-            this.frameRateTrackBar.TickFrequency = 10;
-            this.frameRateTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
             // label13
             // 
@@ -530,6 +518,7 @@
             this.noiseTrackBar.TabIndex = 36;
             this.noiseTrackBar.TickFrequency = 10;
             this.noiseTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.noiseTrackBar.Scroll += new System.EventHandler(this.noiseTrackBar_Scroll);
             // 
             // pictureBox1
             // 
@@ -550,12 +539,26 @@
             this.goCBox.Text = "Go";
             this.goCBox.UseVisualStyleBackColor = true;
             // 
+            // frameRateTrackBar
+            // 
+            this.frameRateTrackBar.LargeChange = 10;
+            this.frameRateTrackBar.Location = new System.Drawing.Point(906, 703);
+            this.frameRateTrackBar.Margin = new System.Windows.Forms.Padding(1);
+            this.frameRateTrackBar.Maximum = 100;
+            this.frameRateTrackBar.Name = "frameRateTrackBar";
+            this.frameRateTrackBar.Size = new System.Drawing.Size(95, 45);
+            this.frameRateTrackBar.TabIndex = 40;
+            this.frameRateTrackBar.TickFrequency = 10;
+            this.frameRateTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.frameRateTrackBar.ValueChanged += new System.EventHandler(this.frameRateTrackBar_ValueChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1150, 829);
+            this.Controls.Add(this.frameRateTrackBar);
             this.Controls.Add(this.goCBox);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.noiseTbox);
@@ -599,7 +602,6 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.temptTrackBar);
-            this.Controls.Add(this.frameRateTrackBar);
             this.Controls.Add(this.noiseTrackBar);
             this.Name = "Form1";
             this.Text = "Prisoner\'s dilemma";
@@ -612,10 +614,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.shapeTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.frameRateTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alphaTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.noiseTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.frameRateTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -657,7 +659,6 @@
         private System.Windows.Forms.Button oneRoundBtn;
         private System.Windows.Forms.TextBox frameRateTbox;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TrackBar frameRateTrackBar;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
@@ -669,6 +670,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox goCBox;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.TrackBar frameRateTrackBar;
     }
 }
 
