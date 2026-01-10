@@ -43,7 +43,6 @@
             this.rewardTB = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.trpsCbox = new System.Windows.Forms.CheckBox();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.trpsPbox = new System.Windows.Forms.PictureBox();
             this.r2tsCbox = new System.Windows.Forms.CheckBox();
             this.r2tsPbox = new System.Windows.Forms.PictureBox();
@@ -232,11 +231,6 @@
             this.trpsCbox.Text = "T>R>P>S";
             this.trpsCbox.UseVisualStyleBackColor = true;
             this.trpsCbox.CheckedChanged += new System.EventHandler(this.trpsCbox_CheckedChanged);
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
             // 
             // trpsPbox
             // 
@@ -539,6 +533,10 @@
             this.goCBox.Text = "Go";
             this.goCBox.UseVisualStyleBackColor = true;
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1Service);
+            // 
             // frameRateTrackBar
             // 
             this.frameRateTrackBar.LargeChange = 10;
@@ -560,7 +558,6 @@
             this.ClientSize = new System.Drawing.Size(1150, 829);
             this.Controls.Add(this.frameRateTrackBar);
             this.Controls.Add(this.goCBox);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.noiseTbox);
             this.Controls.Add(this.frameRateTbox);
             this.Controls.Add(this.label12);
@@ -603,6 +600,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.temptTrackBar);
             this.Controls.Add(this.noiseTrackBar);
+            this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
             this.Text = "Prisoner\'s dilemma";
             ((System.ComponentModel.ISupportInitialize)(this.rewardTrackBar)).EndInit();
@@ -638,7 +636,6 @@
         private System.Windows.Forms.TextBox rewardTB;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox trpsCbox;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.PictureBox trpsPbox;
         private System.Windows.Forms.CheckBox r2tsCbox;
         private System.Windows.Forms.PictureBox r2tsPbox;

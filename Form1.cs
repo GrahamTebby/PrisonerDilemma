@@ -18,22 +18,26 @@ namespace PrisonerDilemma
         public Form1()
         {
             InitializeComponent();
+
+            // Initialise the frame rate tracker
             frameRateTrackBar.Minimum = 0;
             frameRateTrackBar.Maximum = frameRates.Length - 1;
             frameRateTrackBar.TickFrequency = 1;
             frameRateTrackBar.LargeChange = 2;
             frameRateTrackBar.SmallChange = 1;
 
+            // Initialise the bitmaps for the trps picture box
             red = new Bitmap(trpsPbox.Width, trpsPbox.Height);
             blue = new Bitmap(trpsPbox.Width, trpsPbox.Height);
             Graphics gRed = Graphics.FromImage(red);
             gRed.Clear(Color.Red);
             Graphics gBlue = Graphics.FromImage(blue);
             gBlue.Clear(Color.Blue);
-            timer1 = new Timer();
-            timer1.Interval = 1000;
-            timer1.Tick += timer1Service;
-            timer1.Start();
+
+            // Initialise and start the timer
+            //timer1 = new Timer();
+            //timer1.Interval = 1000;
+            //timer1.Start();
         }
 
         private void timer1Service(object sender, EventArgs e)
@@ -54,7 +58,11 @@ namespace PrisonerDilemma
             float newFrameRate = frameRates[newPosn];
             frameRateTbox.Text = newFrameRate.ToString();
             // If the frame rate is zero, wait for another update
-            if (newFrameRate == 0F) return;
+            if (newFrameRate == 0F)
+            {
+                timer1.Stop();
+                return;
+            }
 
             // If the new frame rate is <100, calculate the frequency
             if (newFrameRate < 100)
