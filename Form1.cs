@@ -14,14 +14,32 @@ namespace PrisonerDilemma
 {
     public partial class Form1 : Form
     {
-        Bitmap red, blue, fieldBmp;
-        float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, 101 };
-        Graphics g;
+        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, 101 };
+        readonly Control control;
+        readonly Slider noiseSlider;
+
+        // *** Temporary code for testing scheduling
+        readonly Bitmap fieldBmp;
+        readonly Graphics g;
         int x = 0, y = 0;
 
         public Form1()
         {
             InitializeComponent();
+
+            control = new Control(fieldPbox);
+            noiseSlider = new Slider(new Slider.SliderParms
+            {
+                Name = "Noise",
+                LabelText = "Noise (%)",
+                TrackBar = noiseTrackBar,
+                TextBox = noiseTbox,
+                Label = noiseLabel,
+                MinValue = 0F,
+                InitialValue = 0F,
+                MaxValue = 1F,
+                TextFormat = "F2"
+            });
 
             // Initialise the frame rate tracker
             frameRateTrackBar.Minimum = 0;
@@ -30,6 +48,7 @@ namespace PrisonerDilemma
             frameRateTrackBar.LargeChange = 2;
             frameRateTrackBar.SmallChange = 1;
 
+#if false
             // Initialise the bitmaps for the trps picture box
             fieldBmp = new Bitmap(fieldPbox.Width, fieldPbox.Height);
             fieldPbox.Image = fieldBmp;
@@ -42,10 +61,13 @@ namespace PrisonerDilemma
             blue = new Bitmap(trpsPbox.Width, trpsPbox.Height);
             Graphics gBlue = Graphics.FromImage(blue);
             gBlue.Clear(Color.Blue);
-            
-            // Based on https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.backgroundworker?view=net-10.0
+#endif
+
+            // Based on https://learn.microsoft.com/en-us/dotnet#endif/api/system.componentmodel.backgroundworker?view=net-10.0
             backgroundWorker1.WorkerReportsProgress = false;
             backgroundWorker1.WorkerSupportsCancellation = true;
+
+            noiseSlider.Enable = false; // Disabled for the moment
         }
 
         private void startBg()
@@ -64,15 +86,15 @@ namespace PrisonerDilemma
             }
         }
 
-        void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        void backgroundWorker1_DoWork(object PSender, DoWorkEventArgs PE)
         {   // Do the background work here
-            BackgroundWorker worker = sender as BackgroundWorker;
+            BackgroundWorker worker = PSender as BackgroundWorker;
 
             while (!worker.CancellationPending)
             {
                 playRoundAsync();
             }
-            e.Cancel = true;
+            PE.Cancel = true;
         }
 
          private void playRoundSync()
@@ -83,7 +105,6 @@ namespace PrisonerDilemma
 
         private void playRoundAsync()
         {
-
             playRound(fieldBmp);
             this.Invoke((MethodInvoker)delegate { fieldPbox.Image = fieldBmp; });
         }
@@ -98,18 +119,19 @@ namespace PrisonerDilemma
             }
         }
 
-        private void frameRateTrackBar_ValueChanged(object sender, EventArgs e)
+        private void frameRateTrackBar_ValueChanged(object PSender, EventArgs PE)
         {
+            return; // Disabled for the moment
             // Rates are 0, 1, 1.5, 2, 3, 5, 7, 10, 15, 20 and max
             // This will need to be moved to Control, but this is just a sandpit
             int newPosn = frameRateTrackBar.Value;
             float newFrameRate = frameRates[newPosn];
             frameRateTbox.Text = newFrameRate.ToString();
-            // If the frame rate is zero, wait for another update
+            timer1.Stop();
             stopBg();
+            // If the frame rate is zero, wait for another update
             if (newFrameRate == 0F)
             {
-                timer1.Stop();
                 return;
             }
 
@@ -117,7 +139,6 @@ namespace PrisonerDilemma
             if (newFrameRate < 100)
             {
                 int ms = (int)(1000 / newFrameRate);
-                timer1.Stop();
                 timer1.Interval = ms;
                 timer1.Start();
             }
@@ -128,24 +149,17 @@ namespace PrisonerDilemma
             }
         }
 
-        private void noiseTrackBar_Scroll(object sender, EventArgs e)
+        private void noiseTrackBar_Scroll(object PSender, EventArgs PE)
         {
             int newValue = noiseTrackBar.Value;
             noiseTbox.Text = newValue.ToString();
         }
 
-        private void trpsCbox_CheckedChanged(object sender, EventArgs e)
+        private void trpsCbox_CheckedChanged(object PSender, EventArgs PE)
         {
-            if (trpsCbox.Checked)
-            {
-                trpsPbox.Image = red;
-            }
-            else
-            {
-                trpsPbox.Image = blue;
-            }
+
         }
-        private void timer1Service(object sender, EventArgs e)
+        private void timer1Service(object PSender, EventArgs PE)
         {
             playRoundSync();
         }

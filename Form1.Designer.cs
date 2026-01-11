@@ -64,7 +64,7 @@
             this.frameRateTbox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
+            this.noiseLabel = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.alphaTrackBar = new System.Windows.Forms.TrackBar();
             this.label16 = new System.Windows.Forms.Label();
@@ -443,15 +443,15 @@
             this.label13.TabIndex = 4;
             this.label13.Text = "View / operate";
             // 
-            // label14
+            // noiseLabel
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(623, 703);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(44, 17);
-            this.label14.TabIndex = 19;
-            this.label14.Text = "Noise";
+            this.noiseLabel.AutoSize = true;
+            this.noiseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.noiseLabel.Location = new System.Drawing.Point(623, 703);
+            this.noiseLabel.Name = "noiseLabel";
+            this.noiseLabel.Size = new System.Drawing.Size(44, 17);
+            this.noiseLabel.TabIndex = 19;
+            this.noiseLabel.Text = "Noise";
             // 
             // label15
             // 
@@ -582,7 +582,7 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.minTrackBar);
-            this.Controls.Add(this.label14);
+            this.Controls.Add(this.noiseLabel);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.r2tsPbox);
@@ -662,7 +662,7 @@
         private System.Windows.Forms.TextBox frameRateTbox;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label noiseLabel;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TrackBar alphaTrackBar;
         private System.Windows.Forms.Label label16;
