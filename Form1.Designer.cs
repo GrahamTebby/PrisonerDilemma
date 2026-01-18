@@ -59,7 +59,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.initCombo = new System.Windows.Forms.ComboBox();
-            this.resetBtn = new System.Windows.Forms.Button();
+            this.initBtn = new System.Windows.Forms.Button();
             this.oneRoundBtn = new System.Windows.Forms.Button();
             this.frameRateTbox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -395,20 +395,20 @@
             this.initCombo.Size = new System.Drawing.Size(118, 21);
             this.initCombo.TabIndex = 30;
             // 
-            // resetBtn
+            // initBtn
             // 
-            this.resetBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resetBtn.Location = new System.Drawing.Point(960, 790);
-            this.resetBtn.Name = "resetBtn";
-            this.resetBtn.Size = new System.Drawing.Size(98, 23);
-            this.resetBtn.TabIndex = 31;
-            this.resetBtn.Text = "Reset";
-            this.resetBtn.UseVisualStyleBackColor = true;
+            this.initBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.initBtn.Location = new System.Drawing.Point(1045, 794);
+            this.initBtn.Name = "initBtn";
+            this.initBtn.Size = new System.Drawing.Size(63, 23);
+            this.initBtn.TabIndex = 31;
+            this.initBtn.Text = "Init";
+            this.initBtn.UseVisualStyleBackColor = true;
             // 
             // oneRoundBtn
             // 
             this.oneRoundBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.oneRoundBtn.Location = new System.Drawing.Point(832, 762);
+            this.oneRoundBtn.Location = new System.Drawing.Point(832, 731);
             this.oneRoundBtn.Name = "oneRoundBtn";
             this.oneRoundBtn.Size = new System.Drawing.Size(98, 23);
             this.oneRoundBtn.TabIndex = 32;
@@ -447,11 +447,11 @@
             // 
             this.noiseLabel.AutoSize = true;
             this.noiseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.noiseLabel.Location = new System.Drawing.Point(623, 703);
+            this.noiseLabel.Location = new System.Drawing.Point(597, 703);
             this.noiseLabel.Name = "noiseLabel";
-            this.noiseLabel.Size = new System.Drawing.Size(44, 17);
+            this.noiseLabel.Size = new System.Drawing.Size(70, 17);
             this.noiseLabel.TabIndex = 19;
-            this.noiseLabel.Text = "Noise";
+            this.noiseLabel.Text = "Noise (%)";
             // 
             // label15
             // 
@@ -561,13 +561,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1150, 829);
+            this.Controls.Add(this.oneRoundBtn);
             this.Controls.Add(this.frameRateTrackBar);
             this.Controls.Add(this.goCBox);
             this.Controls.Add(this.noiseTbox);
             this.Controls.Add(this.frameRateTbox);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.oneRoundBtn);
-            this.Controls.Add(this.resetBtn);
+            this.Controls.Add(this.initBtn);
             this.Controls.Add(this.alphaTbox);
             this.Controls.Add(this.initCombo);
             this.Controls.Add(this.textBox3);
@@ -657,7 +657,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox initCombo;
-        private System.Windows.Forms.Button resetBtn;
+        private System.Windows.Forms.Button initBtn;
         private System.Windows.Forms.Button oneRoundBtn;
         private System.Windows.Forms.TextBox frameRateTbox;
         private System.Windows.Forms.Label label12;

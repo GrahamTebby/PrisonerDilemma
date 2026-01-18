@@ -7,8 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-// Just to see if I can push
+#nullable enable
 
 namespace PrisonerDilemma
 {
@@ -16,7 +15,7 @@ namespace PrisonerDilemma
     {
         readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, 101 };
         readonly Control control;
-        readonly Slider noiseSlider;
+        Slider noiseSlider;
 
         // *** Temporary code for testing scheduling
         readonly Bitmap fieldBmp;
@@ -28,18 +27,22 @@ namespace PrisonerDilemma
             InitializeComponent();
 
             control = new Control(fieldPbox);
-            noiseSlider = new Slider(new Slider.SliderParms
+            SliderConstruction noiseConstruction = new SliderConstruction
             {
                 Name = "Noise",
-                LabelText = "Noise (%)",
                 TrackBar = noiseTrackBar,
                 TextBox = noiseTbox,
                 Label = noiseLabel,
                 MinValue = 0F,
                 InitialValue = 0F,
                 MaxValue = 1F,
-                TextFormat = "F2"
-            });
+                NPosns = 101,
+                TextFormat = "F2",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            noiseSlider = new Slider(noiseConstruction);
 
             // Initialise the frame rate tracker
             frameRateTrackBar.Minimum = 0;
@@ -67,7 +70,6 @@ namespace PrisonerDilemma
             backgroundWorker1.WorkerReportsProgress = false;
             backgroundWorker1.WorkerSupportsCancellation = true;
 
-            noiseSlider.Enable = false; // Disabled for the moment
         }
 
         private void startBg()

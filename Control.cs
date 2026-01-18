@@ -14,7 +14,7 @@ namespace PrisonerDilemma
         readonly PictureBox fieldPbox;  // A copy of the PictureBox from the form
         readonly Agent[,] agents;       // The array of agents
         readonly Graphics g;            // Graphics object for drawing
-
+        ControlEventHandler controlEventHandler;
         public Control(PictureBox PFieldPbox)
         {
             fieldPbox = PFieldPbox;
