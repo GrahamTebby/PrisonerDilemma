@@ -21,10 +21,10 @@ namespace PrisonerDilemma
         public float Value { get { return _value; } set { setValue(value); } }
         public bool Enable { get { return _enabled; } set { enableMe(value); } }
         public string LabelText { get { return label.Text; } set { label.Text = value; } }
-        public delegate void ValueChangedDelegate(float newValue);
-        ValueChangedDelegate? ValueChanged;
-        public delegate bool PermitValueChangeDelegate(float newValue);
-        PermitValueChangeDelegate? PermitValueChange;
+        public delegate void ValueChangedDelegate(float PNewValue);
+        public ValueChangedDelegate? ValueChanged;
+        public delegate bool PermitValueChangeDelegate(float PNewValue);
+        public PermitValueChangeDelegate? PermitValueChange;
         
         // HMI objects, I have to keep the first two because they update each other
         private readonly TrackBar trackBar;
@@ -48,19 +48,14 @@ namespace PrisonerDilemma
             textBox = P.TextBox;
             label = P.Label;
 
-            // Initialise properties from the construction parameters
-            Name = P.Name;
-            _value = P.InitialValue;
-            Enable = true;
-            PermitValueChange = null;
-            ValueChanged = null;
-
             // Set up the track bar
-            trackBar.Minimum = 0;
-            trackBar.Maximum = P.NPosns-1;
+            minValue = P.MinValue;
+            maxValue = P.MaxValue;
             if (P.NPosns < 2)
-                throw new ArgumentException("Number of positions for slider must be at least 2"); 
-            deltaValue = (P.MaxValue - P.MinValue) / (P.NPosns-1);
+                throw new ArgumentException("Number of positions for slider must be at least 2");
+            deltaValue = (maxValue - minValue) / (P.NPosns - 1);
+            trackBar.Minimum = 0;
+            trackBar.Maximum = P.NPosns - 1;
             trackBar.SmallChange = 1;
             trackBar.LargeChange = (int)Math.Sqrt(P.NPosns);
             trackBar.ValueChanged += trackBar_ValueChanged;
@@ -73,13 +68,16 @@ namespace PrisonerDilemma
             // and the label
             LabelText = P.InitLabelText ?? LabelText;    // Setter handles it
 
+            // Initialise the value to the initial value
+            setValue(P.InitialValue);
+
             // Initialise the two delegates
             ValueChanged = P.ValueChanged;
             PermitValueChange = P.PermitValueChange;
 
-            minValue = P.MinValue;
-            maxValue = P.MaxValue;
-            deltaValue = (maxValue - minValue) / (P.NPosns - 1);
+            // What's left?
+            Name = P.Name;
+            // Don't need to set Enable as the HMI is already enabled and _enabled is initialised
         }
 
         private void setValue(float PValue)
@@ -89,16 +87,29 @@ namespace PrisonerDilemma
             _value = PValue;
             updateTextBox();
             updateTrackBar();
+            ValueChanged?.Invoke(_value);
         }
 
         private void trackBar_ValueChanged(object PSender, EventArgs PE)
+        {
+            trackBar_ValueChanged1(PSender, PE);
+            ValueChanged?.Invoke(_value);
+        }
+        private void trackBar_ValueChanged1(object PSender, EventArgs PE)
         {   // The value has changed from the track bar - calculate the new value and update the text box
-            _value = minValue + ((TrackBar)PSender).Value * deltaValue;
+           _value = minValue + ((TrackBar)PSender).Value * deltaValue;
             if (_value > maxValue) _value = maxValue; // Just in case of rounding errors
             updateTextBox();
         }
 
         private void textBox_Leave(object PSender, EventArgs PE)
+        {
+            textBox_Leave1(PSender, PE);
+            ValueChanged?.Invoke(_value);
+        }
+
+
+        private void textBox_Leave1(object PSender, EventArgs PE)
         {   // The text box has lost focus - validate and update the track bar
             if (trackBar == null) return; // There is no trackbar to update
             if (float.TryParse(textBox.Text, out float newValue))
@@ -121,7 +132,7 @@ namespace PrisonerDilemma
         private void updateTrackBar()
         {
             int trackbarValue = (int)Math.Round((_value - minValue) / deltaValue);
-            if (trackbarValue < trackBar.Minimum || trackbarValue > trackBar.Maximum) 
+            if (trackbarValue < trackBar.Minimum || trackbarValue > trackBar.Maximum)
                 throw new Exception("Calculated trackbar value out of range");
             trackBar.Value = trackbarValue;
         }
@@ -132,6 +143,8 @@ namespace PrisonerDilemma
             trackBar.Enabled = PEnable;
             textBox.Enabled = PEnable;
         }
+
+        // !!! Don't have anything about permitting the slider to change
     }
 
     public struct SliderConstruction

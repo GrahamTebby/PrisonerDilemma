@@ -13,12 +13,10 @@ namespace PrisonerDilemma
         public float P;
         private readonly List <Result1> results = new List<Result1>();
         private Rectangle rectangle;
-        private readonly Random rand;
 
-        public Agent(Rectangle PRect, Random PRand)
+        public Agent(Rectangle PRect)
         {
-            rand = PRand;
-            P = (float)rand.NextDouble(); // Probability of cooperating: 0 to 1
+            P = 0.5F; // Probability of cooperating: 0 to 1
             rectangle = PRect;
         }
 
@@ -33,8 +31,7 @@ namespace PrisonerDilemma
         }
 
         public void FinaliseRound()
-        {   // !!! Random change of P value
-            P = (float)rand.NextDouble();
+        {   // !!! No change in P for now
 #if false
             // Adjust P based on results
             float avgWinnings = results.Average(r => r.Winnings);

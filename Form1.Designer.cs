@@ -47,14 +47,14 @@
             this.r2tsCbox = new System.Windows.Forms.CheckBox();
             this.r2tsPbox = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.minTbox = new System.Windows.Forms.TextBox();
+            this.maxTbox = new System.Windows.Forms.TextBox();
+            this.shapeTbox = new System.Windows.Forms.TextBox();
+            this.shapeLabel = new System.Windows.Forms.Label();
+            this.minLabel = new System.Windows.Forms.Label();
             this.shapeTrackBar = new System.Windows.Forms.TrackBar();
             this.maxTrackBar = new System.Windows.Forms.TrackBar();
-            this.label9 = new System.Windows.Forms.Label();
+            this.maxLabel = new System.Windows.Forms.Label();
             this.minTrackBar = new System.Windows.Forms.TrackBar();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -271,49 +271,49 @@
             this.label6.TabIndex = 4;
             this.label6.Text = "Constraints";
             // 
-            // textBox3
+            // minTbox
             // 
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox3.Location = new System.Drawing.Point(182, 731);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(28, 20);
-            this.textBox3.TabIndex = 29;
+            this.minTbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.minTbox.Location = new System.Drawing.Point(182, 731);
+            this.minTbox.Name = "minTbox";
+            this.minTbox.Size = new System.Drawing.Size(28, 20);
+            this.minTbox.TabIndex = 29;
             // 
-            // textBox4
+            // maxTbox
             // 
-            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox4.Location = new System.Drawing.Point(182, 759);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(28, 20);
-            this.textBox4.TabIndex = 28;
+            this.maxTbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.maxTbox.Location = new System.Drawing.Point(182, 759);
+            this.maxTbox.Name = "maxTbox";
+            this.maxTbox.Size = new System.Drawing.Size(28, 20);
+            this.maxTbox.TabIndex = 28;
             // 
-            // textBox5
+            // shapeTbox
             // 
-            this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox5.Location = new System.Drawing.Point(182, 787);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(28, 20);
-            this.textBox5.TabIndex = 27;
+            this.shapeTbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.shapeTbox.Location = new System.Drawing.Point(182, 787);
+            this.shapeTbox.Name = "shapeTbox";
+            this.shapeTbox.Size = new System.Drawing.Size(28, 20);
+            this.shapeTbox.TabIndex = 27;
             // 
-            // label7
+            // shapeLabel
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(36, 787);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 17);
-            this.label7.TabIndex = 24;
-            this.label7.Text = "Shape";
+            this.shapeLabel.AutoSize = true;
+            this.shapeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shapeLabel.Location = new System.Drawing.Point(36, 787);
+            this.shapeLabel.Name = "shapeLabel";
+            this.shapeLabel.Size = new System.Drawing.Size(49, 17);
+            this.shapeLabel.TabIndex = 24;
+            this.shapeLabel.Text = "Shape";
             // 
-            // label8
+            // minLabel
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(55, 731);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(30, 17);
-            this.label8.TabIndex = 25;
-            this.label8.Text = "Min";
+            this.minLabel.AutoSize = true;
+            this.minLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.minLabel.Location = new System.Drawing.Point(55, 731);
+            this.minLabel.Name = "minLabel";
+            this.minLabel.Size = new System.Drawing.Size(30, 17);
+            this.minLabel.TabIndex = 25;
+            this.minLabel.Text = "Min";
             // 
             // shapeTrackBar
             // 
@@ -339,15 +339,15 @@
             this.maxTrackBar.TickFrequency = 10;
             this.maxTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
-            // label9
+            // maxLabel
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(52, 759);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(33, 17);
-            this.label9.TabIndex = 17;
-            this.label9.Text = "Max";
+            this.maxLabel.AutoSize = true;
+            this.maxLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxLabel.Location = new System.Drawing.Point(52, 759);
+            this.maxLabel.Name = "maxLabel";
+            this.maxLabel.Size = new System.Drawing.Size(33, 17);
+            this.maxLabel.TabIndex = 17;
+            this.maxLabel.Text = "Max";
             // 
             // minTrackBar
             // 
@@ -570,16 +570,16 @@
             this.Controls.Add(this.initBtn);
             this.Controls.Add(this.alphaTbox);
             this.Controls.Add(this.initCombo);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.minTbox);
+            this.Controls.Add(this.maxTbox);
+            this.Controls.Add(this.shapeTbox);
             this.Controls.Add(this.label16);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label8);
+            this.Controls.Add(this.shapeLabel);
+            this.Controls.Add(this.minLabel);
             this.Controls.Add(this.shapeTrackBar);
             this.Controls.Add(this.maxTrackBar);
             this.Controls.Add(this.alphaTrackBar);
-            this.Controls.Add(this.label9);
+            this.Controls.Add(this.maxLabel);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.minTrackBar);
             this.Controls.Add(this.noiseLabel);
@@ -645,14 +645,14 @@
         private System.Windows.Forms.CheckBox r2tsCbox;
         private System.Windows.Forms.PictureBox r2tsPbox;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox minTbox;
+        private System.Windows.Forms.TextBox maxTbox;
+        private System.Windows.Forms.TextBox shapeTbox;
+        private System.Windows.Forms.Label shapeLabel;
+        private System.Windows.Forms.Label minLabel;
         private System.Windows.Forms.TrackBar shapeTrackBar;
         private System.Windows.Forms.TrackBar maxTrackBar;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label maxLabel;
         private System.Windows.Forms.TrackBar minTrackBar;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;

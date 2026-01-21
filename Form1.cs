@@ -13,20 +13,89 @@ namespace PrisonerDilemma
 {
     public partial class Form1 : Form
     {
-        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, 101 };
-        readonly Control control;
-        Slider noiseSlider;
+        int agentPx = 50;   // The number of pixels on an agent's side
 
-        // *** Temporary code for testing scheduling
-        readonly Bitmap fieldBmp;
-        readonly Graphics g;
-        int x = 0, y = 0;
+        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, 101 };
+        readonly View view;
+        readonly Control control;
+        readonly Agent[,] agents;
+        readonly Init init;
+        Slider minSlider, maxSlider, shapeSlider;   // Sliders for init
+        Slider noiseSlider;
 
         public Form1()
         {
             InitializeComponent();
+            view = new View(fieldPbox, agentPx, agents);
+            agents = new Agent[view.FieldSize.Width, view.FieldSize.Height];
 
-            control = new Control(fieldPbox);
+            // Initialise the agents array
+            agents = new Agent[view.FieldSize.Width, view.FieldSize.Height];
+            for (int x = 0; x < view.FieldSize.Width; x++)
+            {
+                Point p = new Point(x * view.Agent1Size.Width, 0);
+                for (int y = 0; y < view.FieldSize.Height; y++)
+                {
+                    p.Y = y * view.Agent1Size.Height;
+                    Rectangle agentRect = new Rectangle(p, view.Agent1Size);
+                    agents[x, y] = new Agent(agentRect);
+                }
+            }
+            control = new Control(view.FieldSize, view.Agent1Size);
+            
+            SliderConstruction minConstruction = new SliderConstruction
+            {
+                Name = "Min",
+                TrackBar = minTrackBar,
+                TextBox = minTbox,
+                Label = minLabel,
+                MinValue = 0F,
+                InitialValue = 0F,
+                MaxValue = 1F,
+                NPosns = 101,
+                TextFormat = "F2",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            minSlider = new Slider(minConstruction);
+
+            SliderConstruction maxConstruction = new SliderConstruction
+            {
+                Name = "Max",
+                TrackBar = maxTrackBar,
+                TextBox = maxTbox,
+                Label = maxLabel,
+                MinValue = 0F,
+                InitialValue = 0F,
+                MaxValue = 1F,
+                NPosns = 101,
+                TextFormat = "F2",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            maxSlider = new Slider(maxConstruction);
+
+            SliderConstruction shapeConstruction = new SliderConstruction
+            {
+                Name = "Shape",
+                TrackBar = shapeTrackBar,
+                TextBox = shapeTbox,
+                Label = shapeLabel,
+                MinValue = 0F,
+                InitialValue = 0F,
+                MaxValue = 1F,
+                NPosns = 101,
+                TextFormat = "F2",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            shapeSlider = new Slider(shapeConstruction);
+
+            init = new Init(minSlider, maxSlider, shapeSlider, agents, view);
+
             SliderConstruction noiseConstruction = new SliderConstruction
             {
                 Name = "Noise",
@@ -53,8 +122,7 @@ namespace PrisonerDilemma
 
 #if false
             // Initialise the bitmaps for the trps picture box
-            fieldBmp = new Bitmap(fieldPbox.Width, fieldPbox.Height);
-            fieldPbox.Image = fieldBmp;
+
             g = Graphics.FromImage(fieldBmp);
             g.Clear(Color.LightBlue);
 
@@ -64,14 +132,14 @@ namespace PrisonerDilemma
             blue = new Bitmap(trpsPbox.Width, trpsPbox.Height);
             Graphics gBlue = Graphics.FromImage(blue);
             gBlue.Clear(Color.Blue);
-#endif
+
 
             // Based on https://learn.microsoft.com/en-us/dotnet#endif/api/system.componentmodel.backgroundworker?view=net-10.0
             backgroundWorker1.WorkerReportsProgress = false;
             backgroundWorker1.WorkerSupportsCancellation = true;
-
+#endif
         }
-
+#if false
         private void startBg()
         {   // Start the asynchronous operation
             if (!backgroundWorker1.IsBusy)
@@ -87,19 +155,19 @@ namespace PrisonerDilemma
                 backgroundWorker1.CancelAsync();
             }
         }
-
+#endif
         void backgroundWorker1_DoWork(object PSender, DoWorkEventArgs PE)
         {   // Do the background work here
-            BackgroundWorker worker = PSender as BackgroundWorker;
+            //BackgroundWorker worker = PSender as BackgroundWorker;
 
-            while (!worker.CancellationPending)
+            //while (!worker.CancellationPending)
             {
-                playRoundAsync();
+            //    playRoundAsync();
             }
-            PE.Cancel = true;
+            //PE.Cancel = true;
         }
-
-         private void playRoundSync()
+#if false
+        private void playRoundSync()
         {
             playRound(fieldBmp);
             fieldPbox.Image = fieldBmp;
@@ -120,7 +188,7 @@ namespace PrisonerDilemma
                 y+=2;
             }
         }
-
+#endif
         private void frameRateTrackBar_ValueChanged(object PSender, EventArgs PE)
         {
             return; // Disabled for the moment
@@ -130,7 +198,7 @@ namespace PrisonerDilemma
             float newFrameRate = frameRates[newPosn];
             frameRateTbox.Text = newFrameRate.ToString();
             timer1.Stop();
-            stopBg();
+            // !!! stopBg();
             // If the frame rate is zero, wait for another update
             if (newFrameRate == 0F)
             {
@@ -147,7 +215,7 @@ namespace PrisonerDilemma
             else
             {
                 // If it's max, assign to another thread
-                startBg();
+                // !!! startBg();
             }
         }
 
@@ -163,7 +231,7 @@ namespace PrisonerDilemma
         }
         private void timer1Service(object PSender, EventArgs PE)
         {
-            playRoundSync();
+            // !!!playRoundSync();
         }
 
 
