@@ -13,7 +13,7 @@ namespace PrisonerDilemma
 {
     public partial class Form1 : Form
     {   // Compile time parameters
-        const int agentPx = 50;   // The number of pixels on an agent's side
+        const int agentPx = 5;   // The number of pixels on an agent's side
         public const int MaxFR = 1000; // Special value to indicate maximum frame rate (background processing)
         readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, MaxFR };
 

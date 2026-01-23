@@ -29,7 +29,12 @@ namespace PrisonerDilemma
 
         public void OnDraw(object PSender, EventArgs PE)
         {   // Tell each agent to draw itself
-            // Public because Form1 subscribes to 
+            // This might be called from a background thread
+            if (fieldPbox.InvokeRequired)
+            {   // Yes it was. Invoke on the HMI thread
+                fieldPbox.Invoke((MethodInvoker)delegate { OnDraw(PSender, PE); });
+                return;
+            }
             int nx = agents.GetLength(0);
             int ny = agents.GetLength(1);
             for (int x = 0; x < nx; x++)

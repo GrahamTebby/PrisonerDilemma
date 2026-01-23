@@ -19,6 +19,7 @@ namespace PrisonerDilemma
         private float[] frameRates;
         private Games games;
         private Timer frameTimer1;
+        private BackgroundWorker backgroundWorker1;
 
         public Control(Agent[,] PAgents, SliderFR PFrameRateSlider, CheckBox PGoCBox, Button POneRoundBtn, float[] PFrameRatesGames, Games PGames)
         {
@@ -32,16 +33,16 @@ namespace PrisonerDilemma
             PFrameRateSlider.ValueChanged += frameRateTrackBar_ValueChanged;
             frameTimer1 = new Timer();
             frameTimer1.Tick += frameTimer1_Tick;
+            backgroundWorker1 = new BackgroundWorker();
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
         private void frameRateTrackBar_ValueChanged(float PNewFrameRate)
         {
-            if (PNewFrameRate == Form1.MaxFR)
-            {   // !!! Background not yet implemented
-                return;
-            }
             frameTimer1.Stop();
-            // !!! stopBg();
+            stopBg();
+
             // If the frame rate is zero, wait for another update
             if (PNewFrameRate == 0F)
             {
@@ -49,16 +50,15 @@ namespace PrisonerDilemma
             }
 
             // If the new frame rate is <100, calculate the frequency
-            if (PNewFrameRate < 100)
+            if (PNewFrameRate == Form1.MaxFR)
+            {   
+                startBg();
+            }
+            else
             {
                 int ms = (int)(1000 / PNewFrameRate);
                 frameTimer1.Interval = ms;
                 frameTimer1.Start();
-            }
-            else
-            {
-                // If it's max, assign to another thread
-                // !!! startBg();
             }
         }
 
@@ -71,7 +71,6 @@ namespace PrisonerDilemma
             }
         }
 
-#if false
         private void startBg()
         {   // Start the asynchronous operation
             if (!backgroundWorker1.IsBusy)
@@ -85,26 +84,25 @@ namespace PrisonerDilemma
             if (backgroundWorker1.WorkerSupportsCancellation)
             {
                 backgroundWorker1.CancelAsync();
+                // !!! This returns immediately
+                // Need to service
+                // void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+                //{
+                //    if (e.Cancelled)
+                //    {
+                //        // Now it's truly cancelled
+                //    }
+                //}
             }
         }
 
         void backgroundWorker1_DoWork(object PSender, DoWorkEventArgs PE)
-        {   // Do the background work here
-            //BackgroundWorker worker = PSender as BackgroundWorker;
-
-            //while (!worker.CancellationPending)
+        {   // Do the background work here            
+            while (!backgroundWorker1.CancellationPending)
             {
-                //    playRoundAsync();
+                games.PlayRound(this, EventArgs.Empty);
             }
-            //PE.Cancel = true;
-        
+            PE.Cancel = true;        
         }
-
-        private void playRoundAsync()
-        {
-            playRound(fieldBmp);
-            this.Invoke((MethodInvoker)delegate { fieldPbox.Image = fieldBmp; });
-        }
-#endif
     }
 }

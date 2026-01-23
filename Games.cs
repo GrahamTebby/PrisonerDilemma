@@ -37,7 +37,6 @@ namespace PrisonerDilemma
             {   
                 playNoWrapping(nx, ny); // Play without wrapping
             }
-
             
             FinaliseRound(nx, ny);      // Finalise the round for all agents
 
