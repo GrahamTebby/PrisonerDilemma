@@ -12,37 +12,38 @@ using System.Windows.Forms;
 namespace PrisonerDilemma
 {
     public partial class Form1 : Form
-    {
-        int agentPx = 50;   // The number of pixels on an agent's side
+    {   // Compile time parameters
+        const int agentPx = 50;   // The number of pixels on an agent's side
+        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, -1 };
 
-        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, 101 };
-        readonly View view;
-        readonly Control control;
         readonly Agent[,] agents;
+        readonly View view;
+        readonly private Game game;
+        readonly Games games;
+        readonly Control control;
         readonly Init init;
         Slider minSlider, maxSlider, shapeSlider;   // Sliders for init
+        SliderFR frameRateSlider;     // Slider for control
         Slider noiseSlider;
 
         public Form1()
         {
             InitializeComponent();
-            view = new View(fieldPbox, agentPx, agents);
-            agents = new Agent[view.FieldSize.Width, view.FieldSize.Height];
 
-            // Initialise the agents array
-            agents = new Agent[view.FieldSize.Width, view.FieldSize.Height];
-            for (int x = 0; x < view.FieldSize.Width; x++)
-            {
-                Point p = new Point(x * view.Agent1Size.Width, 0);
-                for (int y = 0; y < view.FieldSize.Height; y++)
-                {
-                    p.Y = y * view.Agent1Size.Height;
-                    Rectangle agentRect = new Rectangle(p, view.Agent1Size);
-                    agents[x, y] = new Agent(agentRect);
-                }
-            }
-            control = new Control(view.FieldSize, view.Agent1Size);
+            // Calculate the field size & adjust FieldPbox size for an exact fit
+            Size fieldSize = calculateFieldSize();
+            adjustFieldPboxSize(fieldSize);
             
+            agents = initAgentArray(fieldSize); // Cnstruct the agents array
+            // Now that we have the agents array, construct the view & control
+            view = new View(fieldPbox, agents);
+            game = new Game();
+            games = new Games(agents, torroidalFieldCBox, game);  // We need this before control so that control can hook up the event
+            games.RoundPlayed += view.OnDraw; // Hook up the event to play a round when drawing
+            control = new Control(agents, oneRoundBtn, games);
+            //control = new Control(agents, oneRoundBtn, frameRateSlider, goCBox, frameRates);
+
+            #region Initialise the init sliders
             SliderConstruction minConstruction = new SliderConstruction
             {
                 Name = "Min",
@@ -93,8 +94,28 @@ namespace PrisonerDilemma
                 ValueChanged = null
             };
             shapeSlider = new Slider(shapeConstruction);
+            #endregion
 
             init = new Init(minSlider, maxSlider, shapeSlider, agents, view);
+
+            #region Initialise the control slider (Framerate)
+            SliderConstruction frameRateConstruction = new SliderConstruction
+            {
+                Name = "Frame rate",
+                TrackBar = frameRateTrackBar,
+                TextBox = frameRateTbox,
+                Label = frameRateLabel,
+                MinValue = 0F,
+                InitialValue = 0F,
+                MaxValue = 1F,
+                NPosns = frameRates.Length - 1,
+                TextFormat = "F1",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            frameRateSlider = new SliderFR(frameRateConstruction);
+            #endregion
 
             SliderConstruction noiseConstruction = new SliderConstruction
             {
@@ -112,83 +133,26 @@ namespace PrisonerDilemma
                 ValueChanged = null
             };
             noiseSlider = new Slider(noiseConstruction);
-
-            // Initialise the frame rate tracker
-            frameRateTrackBar.Minimum = 0;
-            frameRateTrackBar.Maximum = frameRates.Length - 1;
-            frameRateTrackBar.TickFrequency = 1;
-            frameRateTrackBar.LargeChange = 2;
-            frameRateTrackBar.SmallChange = 1;
-
-#if false
-            // Initialise the bitmaps for the trps picture box
-
-            g = Graphics.FromImage(fieldBmp);
-            g.Clear(Color.LightBlue);
-
-            red = new Bitmap(trpsPbox.Width, trpsPbox.Height);
-            Graphics gRed = Graphics.FromImage(red);
-            gRed.Clear(Color.Red);
-            blue = new Bitmap(trpsPbox.Width, trpsPbox.Height);
-            Graphics gBlue = Graphics.FromImage(blue);
-            gBlue.Clear(Color.Blue);
-
-
-            // Based on https://learn.microsoft.com/en-us/dotnet#endif/api/system.componentmodel.backgroundworker?view=net-10.0
-            backgroundWorker1.WorkerReportsProgress = false;
-            backgroundWorker1.WorkerSupportsCancellation = true;
-#endif
-        }
-#if false
-        private void startBg()
-        {   // Start the asynchronous operation
-            if (!backgroundWorker1.IsBusy)
-            {
-                backgroundWorker1.RunWorkerAsync();
-            }
         }
 
-        private void stopBg()
-        {   // Stop the asynchronous operation
-            if (backgroundWorker1.WorkerSupportsCancellation)
-            {
-                backgroundWorker1.CancelAsync();
-            }
-        }
-#endif
-        void backgroundWorker1_DoWork(object PSender, DoWorkEventArgs PE)
-        {   // Do the background work here
-            //BackgroundWorker worker = PSender as BackgroundWorker;
-
-            //while (!worker.CancellationPending)
-            {
-            //    playRoundAsync();
-            }
-            //PE.Cancel = true;
-        }
-#if false
-        private void playRoundSync()
+        private Agent[,] initAgentArray(Size fieldSize)
         {
-            playRound(fieldBmp);
-            fieldPbox.Image = fieldBmp;
-        }
-
-        private void playRoundAsync()
-        {
-            playRound(fieldBmp);
-            this.Invoke((MethodInvoker)delegate { fieldPbox.Image = fieldBmp; });
-        }
-
-        private void playRound(Bitmap PBitmap)
-        {   // It's a bit minimalist at the moment
-            PBitmap.SetPixel(x, y, Color.Black);
-            if (++x >= PBitmap.Width)
+            Size agent1Size = new Size(agentPx, agentPx);
+            // Initialise the agents array
+            Agent[,] agents1 = new Agent[fieldSize.Width, fieldSize.Height];
+            for (int x = 0; x < fieldSize.Width; x++)
             {
-                x = 0;
-                y+=2;
+                Point p = new Point(x * agentPx, 0);
+                for (int y = 0; y < fieldSize.Height; y++)
+                {
+                    p.Y = y * agentPx;
+                    Rectangle agentRect = new Rectangle(p, agent1Size);
+                    agents1[x, y] = new Agent(agentRect);
+                }
             }
+            return agents1;
         }
-#endif
+
         private void frameRateTrackBar_ValueChanged(object PSender, EventArgs PE)
         {
             return; // Disabled for the moment
@@ -234,6 +198,17 @@ namespace PrisonerDilemma
             // !!!playRoundSync();
         }
 
+        private Size calculateFieldSize()
+        {
+            int numAgentsX = fieldPbox.Width / agentPx;
+            int numAgentsY = fieldPbox.Height / agentPx;
+            return new Size(numAgentsX, numAgentsY);
+        }
 
+        private void adjustFieldPboxSize(Size PFieldSize)
+        {
+            fieldPbox.Width = PFieldSize.Width * agentPx;
+            fieldPbox.Height = PFieldSize.Height * agentPx;
+        }
     }
 }

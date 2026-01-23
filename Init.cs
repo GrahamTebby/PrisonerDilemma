@@ -13,9 +13,8 @@ namespace PrisonerDilemma
         Slider minSlider, maxSlider, shapeSlider;
         Agent[,] agents;
         public bool Enable { get { return _enable; } set { setEnable(value); } }
-        public event Action<Agent [,]>? InitChanged;
+        public event EventHandler? InitChanged;
 
-        private Size fieldSize;
         private bool _enable = true;
 
         public Init(Slider PMinSlider, Slider PMaxSlider, Slider PShapeSlider, Agent[,] PAgents, View PView)
@@ -28,7 +27,7 @@ namespace PrisonerDilemma
             PShapeSlider.ValueChanged = onSliderChanged;
             // Don't have the delegates for PermitValueChange for now
             agents = PAgents;
-            InitChanged += PView.OnDraw;
+            InitChanged += PView.OnDraw; // !!! Subscribe the view to the InitChanged event
         }
 
         private void onSliderChanged(float PNewValue)
@@ -59,7 +58,7 @@ namespace PrisonerDilemma
                 }
             }
 
-            InitChanged?.Invoke(agents);
+            InitChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -5,44 +5,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Runtime.Remoting.Channels;
 
 namespace PrisonerDilemma
 {
     internal class View
     {
-        public readonly Size FieldSize;
-        public readonly Size Agent1Size;
+        // Local references to external objects
         private PictureBox fieldPbox;
+        private Agent[,] agents;
+        // 
         private Bitmap fieldBmp;
         private Graphics gField;
-        private Agent[,] agents;
 
-        public View(PictureBox PFieldPbox, int PAgentPx, Agent[,] PAgents)
+        public View(PictureBox PFieldPbox, Agent[,] PAgents)
         {
             fieldPbox = PFieldPbox;
-            int numAgentsX = fieldPbox.Width / PAgentPx;
-            int numAgentsY = fieldPbox.Height / PAgentPx;
-            Agent1Size = new Size(PAgentPx, PAgentPx);
-            fieldPbox.Width = numAgentsX * PAgentPx;
-            fieldPbox.Height = numAgentsY * PAgentPx;
-            FieldSize = new Size(numAgentsX, numAgentsY);
             agents = PAgents;
-
             // Initialise the bitmap and graphics object
             fieldBmp = new Bitmap(fieldPbox.Width, fieldPbox.Height);
             gField = Graphics.FromImage(fieldBmp);
-            gField.Clear(Color.LightYellow);
-
-            fieldPbox.Image = fieldBmp;
         }
 
-        public void OnDraw(Agent[,] PAgents)
-        {
-            for (int x = 0; x < FieldSize.Width; x++)
+        public void OnDraw(object PSender, EventArgs PE)
+        {   // Tell each agent to draw itself
+            // Public because Form1 subscribes to 
+            int nx = agents.GetLength(0);
+            int ny = agents.GetLength(1);
+            for (int x = 0; x < nx; x++)
             {
-                for (int y = 0; y < FieldSize.Height; y++)
+                for (int y = 0; y < ny; y++)
                 {
-                    PAgents[x, y].Draw(gField);
+                    agents[x, y].Draw(gField);
                 }
             }
             fieldPbox.Image = fieldBmp;

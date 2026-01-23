@@ -62,7 +62,7 @@
             this.initBtn = new System.Windows.Forms.Button();
             this.oneRoundBtn = new System.Windows.Forms.Button();
             this.frameRateTbox = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.frameRateLabel = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.noiseLabel = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -76,6 +76,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.frameRateTrackBar = new System.Windows.Forms.TrackBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.torroidalFieldCBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.rewardTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.temptTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.suckerTrackBar)).BeginInit();
@@ -398,7 +399,7 @@
             // initBtn
             // 
             this.initBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.initBtn.Location = new System.Drawing.Point(1045, 794);
+            this.initBtn.Location = new System.Drawing.Point(1040, 790);
             this.initBtn.Name = "initBtn";
             this.initBtn.Size = new System.Drawing.Size(63, 23);
             this.initBtn.TabIndex = 31;
@@ -408,7 +409,7 @@
             // oneRoundBtn
             // 
             this.oneRoundBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.oneRoundBtn.Location = new System.Drawing.Point(832, 731);
+            this.oneRoundBtn.Location = new System.Drawing.Point(1005, 732);
             this.oneRoundBtn.Name = "oneRoundBtn";
             this.oneRoundBtn.Size = new System.Drawing.Size(98, 23);
             this.oneRoundBtn.TabIndex = 32;
@@ -423,15 +424,15 @@
             this.frameRateTbox.Size = new System.Drawing.Size(52, 20);
             this.frameRateTbox.TabIndex = 35;
             // 
-            // label12
+            // frameRateLabel
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(829, 703);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(77, 17);
-            this.label12.TabIndex = 33;
-            this.label12.Text = "Frame rate";
+            this.frameRateLabel.AutoSize = true;
+            this.frameRateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.frameRateLabel.Location = new System.Drawing.Point(829, 703);
+            this.frameRateLabel.Name = "frameRateLabel";
+            this.frameRateLabel.Size = new System.Drawing.Size(77, 17);
+            this.frameRateLabel.TabIndex = 33;
+            this.frameRateLabel.Text = "Frame rate";
             // 
             // label13
             // 
@@ -551,9 +552,16 @@
             this.frameRateTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.frameRateTrackBar.ValueChanged += new System.EventHandler(this.frameRateTrackBar_ValueChanged);
             // 
-            // backgroundWorker1
+            // torroidalFieldCBox
             // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.torroidalFieldCBox.AutoSize = true;
+            this.torroidalFieldCBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.torroidalFieldCBox.Location = new System.Drawing.Point(832, 736);
+            this.torroidalFieldCBox.Name = "torroidalFieldCBox";
+            this.torroidalFieldCBox.Size = new System.Drawing.Size(109, 20);
+            this.torroidalFieldCBox.TabIndex = 41;
+            this.torroidalFieldCBox.Text = "Torroidal field";
+            this.torroidalFieldCBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -561,12 +569,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1150, 829);
+            this.Controls.Add(this.torroidalFieldCBox);
             this.Controls.Add(this.oneRoundBtn);
             this.Controls.Add(this.frameRateTrackBar);
             this.Controls.Add(this.goCBox);
             this.Controls.Add(this.noiseTbox);
             this.Controls.Add(this.frameRateTbox);
-            this.Controls.Add(this.label12);
+            this.Controls.Add(this.frameRateLabel);
             this.Controls.Add(this.initBtn);
             this.Controls.Add(this.alphaTbox);
             this.Controls.Add(this.initCombo);
@@ -660,7 +669,7 @@
         private System.Windows.Forms.Button initBtn;
         private System.Windows.Forms.Button oneRoundBtn;
         private System.Windows.Forms.TextBox frameRateTbox;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label frameRateLabel;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label noiseLabel;
         private System.Windows.Forms.Label label15;
@@ -674,6 +683,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TrackBar frameRateTrackBar;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.CheckBox torroidalFieldCBox;
     }
 }
 

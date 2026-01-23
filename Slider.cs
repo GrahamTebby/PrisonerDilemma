@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Xsl;
 #nullable enable
 
 namespace PrisonerDilemma
@@ -25,21 +25,21 @@ namespace PrisonerDilemma
         public ValueChangedDelegate? ValueChanged;
         public delegate bool PermitValueChangeDelegate(float PNewValue);
         public PermitValueChangeDelegate? PermitValueChange;
-        
+
         // HMI objects, I have to keep the first two because they update each other
-        private readonly TrackBar trackBar;
-        private readonly TextBox textBox;
-        private readonly Label label;   // I have to update its text
+        protected readonly TrackBar trackBar;
+        protected readonly TextBox textBox;
+        protected readonly Label label;   // I have to update its text
 
         // Other instantiation and initialisation
-        private float minValue;
-        private float maxValue;
-        private float deltaValue;
-        private string textFormat;
+        protected float minValue;
+        protected float maxValue;
+        protected float deltaValue;
+        protected string textFormat;
 
         // Backing stores
-        private float _value;
-        private bool _enabled = true;
+        protected float _value;
+        protected bool _enabled = true;
 
         public Slider(SliderConstruction P)
         {
@@ -80,7 +80,7 @@ namespace PrisonerDilemma
             // Don't need to set Enable as the HMI is already enabled and _enabled is initialised
         }
 
-        private void setValue(float PValue)
+        protected void setValue(float PValue)
         {
             if (PValue < minValue || PValue > maxValue)
                 throw new ArgumentOutOfRangeException($"Value {PValue} is out of range [{minValue},{maxValue}] for slider {Name}");
@@ -90,26 +90,26 @@ namespace PrisonerDilemma
             ValueChanged?.Invoke(_value);
         }
 
-        private void trackBar_ValueChanged(object PSender, EventArgs PE)
+        protected void trackBar_ValueChanged(object PSender, EventArgs PE)
         {
             trackBar_ValueChanged1(PSender, PE);
             ValueChanged?.Invoke(_value);
         }
-        private void trackBar_ValueChanged1(object PSender, EventArgs PE)
+        protected void trackBar_ValueChanged1(object PSender, EventArgs PE)
         {   // The value has changed from the track bar - calculate the new value and update the text box
-           _value = minValue + ((TrackBar)PSender).Value * deltaValue;
+            _value = minValue + ((TrackBar)PSender).Value * deltaValue;
             if (_value > maxValue) _value = maxValue; // Just in case of rounding errors
             updateTextBox();
         }
 
-        private void textBox_Leave(object PSender, EventArgs PE)
+        protected void textBox_Leave(object PSender, EventArgs PE)
         {
             textBox_Leave1(PSender, PE);
             ValueChanged?.Invoke(_value);
         }
 
 
-        private void textBox_Leave1(object PSender, EventArgs PE)
+        protected void textBox_Leave1(object PSender, EventArgs PE)
         {   // The text box has lost focus - validate and update the track bar
             if (trackBar == null) return; // There is no trackbar to update
             if (float.TryParse(textBox.Text, out float newValue))
@@ -124,12 +124,12 @@ namespace PrisonerDilemma
             updateTextBox();
         }
 
-        private void updateTextBox()
+        virtual protected void updateTextBox()
         {
             textBox.Text = _value.ToString(textFormat);
         }
 
-        private void updateTrackBar()
+        protected void updateTrackBar()
         {
             int trackbarValue = (int)Math.Round((_value - minValue) / deltaValue);
             if (trackbarValue < trackBar.Minimum || trackbarValue > trackBar.Maximum)
@@ -137,14 +137,33 @@ namespace PrisonerDilemma
             trackBar.Value = trackbarValue;
         }
 
-        private void enableMe(bool PEnable)
+        protected void enableMe(bool PEnable)
         {
             _enabled = PEnable;
             trackBar.Enabled = PEnable;
             textBox.Enabled = PEnable;
         }
 
-        // !!! Don't have anything about permitting the slider to change
+        // !!! Don't have anything about permitting the slider to give actual frame rates, not index position
+        // !!! Also need to make way for timer and background worker
+    }
+
+    public class SliderFR : Slider
+    {   // A slider for the frame rate
+
+        public SliderFR(SliderConstruction P) : base(P) 
+        {
+            textBox.ReadOnly = false;
+        }
+
+        protected override void updateTextBox()
+        {
+            if (_value < 0F)
+                textBox.Text = "Max";
+            else
+                textBox.Text =
+                _value.ToString(textFormat);
+        }
     }
 
     public struct SliderConstruction
@@ -161,5 +180,5 @@ namespace PrisonerDilemma
         public string? InitLabelText;
         public Slider.PermitValueChangeDelegate? PermitValueChange;
         public Slider.ValueChangedDelegate? ValueChanged;
-    }
+    };
 }
