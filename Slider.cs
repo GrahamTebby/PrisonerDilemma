@@ -90,7 +90,7 @@ namespace PrisonerDilemma
             ValueChanged?.Invoke(_value);
         }
 
-        protected void trackBar_ValueChanged(object PSender, EventArgs PE)
+        virtual protected void trackBar_ValueChanged(object PSender, EventArgs PE)
         {
             trackBar_ValueChanged1(PSender, PE);
             ValueChanged?.Invoke(_value);
@@ -150,19 +150,24 @@ namespace PrisonerDilemma
 
     public class SliderFR : Slider
     {   // A slider for the frame rate
+        private float[] frameRates;
 
-        public SliderFR(SliderConstruction P) : base(P) 
+        public SliderFR(SliderConstruction P, float[] PFrameRates) : base(P) 
         {
-            textBox.ReadOnly = false;
+            frameRates = PFrameRates;
+        }
+
+        override protected void trackBar_ValueChanged(object PSender, EventArgs PE)
+        {
+            _value = frameRates[(int)((TrackBar)PSender).Value];
+            updateTextBox();
+            ValueChanged?.Invoke(_value);
         }
 
         protected override void updateTextBox()
         {
-            if (_value < 0F)
-                textBox.Text = "Max";
-            else
-                textBox.Text =
-                _value.ToString(textFormat);
+            if (_value == Form1.MaxFR) textBox.Text = "Max";
+            else base.updateTextBox();
         }
     }
 

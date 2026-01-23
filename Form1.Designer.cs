@@ -550,7 +550,6 @@
             this.frameRateTrackBar.TabIndex = 40;
             this.frameRateTrackBar.TickFrequency = 10;
             this.frameRateTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.frameRateTrackBar.ValueChanged += new System.EventHandler(this.frameRateTrackBar_ValueChanged);
             // 
             // torroidalFieldCBox
             // 

@@ -13,19 +13,62 @@ namespace PrisonerDilemma
     {
         readonly Agent[,] agents;       // The array of agents
         //!!!ControlEventHandler controlEventHandler;
-        private Button oneRoundBtn;
-        private Games games;
-        private Slider frameRateSlider;
+        private SliderFR frameRateSlider;
         private CheckBox goCBox;
+        private Button oneRoundBtn;
         private float[] frameRates;
+        private Games games;
+        private Timer frameTimer1;
 
-        public Control(Agent[,] PAgents, Button POneRoundBtn, Games PGames)
+        public Control(Agent[,] PAgents, SliderFR PFrameRateSlider, CheckBox PGoCBox, Button POneRoundBtn, float[] PFrameRatesGames, Games PGames)
         {
             agents = PAgents;
+            frameRateSlider = PFrameRateSlider;
+            goCBox = PGoCBox;
             oneRoundBtn = POneRoundBtn;
+            frameRates = PFrameRatesGames;
             games = PGames;
             oneRoundBtn.Click += games.PlayRound;
-            // !!! Need to generate calls to Games and get the slider to display frame rates, not 
+            PFrameRateSlider.ValueChanged += frameRateTrackBar_ValueChanged;
+            frameTimer1 = new Timer();
+            frameTimer1.Tick += frameTimer1_Tick;
+        }
+
+        private void frameRateTrackBar_ValueChanged(float PNewFrameRate)
+        {
+            if (PNewFrameRate == Form1.MaxFR)
+            {   // !!! Background not yet implemented
+                return;
+            }
+            frameTimer1.Stop();
+            // !!! stopBg();
+            // If the frame rate is zero, wait for another update
+            if (PNewFrameRate == 0F)
+            {
+                return;
+            }
+
+            // If the new frame rate is <100, calculate the frequency
+            if (PNewFrameRate < 100)
+            {
+                int ms = (int)(1000 / PNewFrameRate);
+                frameTimer1.Interval = ms;
+                frameTimer1.Start();
+            }
+            else
+            {
+                // If it's max, assign to another thread
+                // !!! startBg();
+            }
+        }
+
+        private void frameTimer1_Tick(object sender, EventArgs e)
+        {
+            games.PlayRound(this, EventArgs.Empty);
+            if (!goCBox.Checked)
+            {
+                // !!!frameTimer1.Stop();
+            }
         }
 
 #if false
@@ -57,26 +100,11 @@ namespace PrisonerDilemma
         
         }
 
-        private void playRoundSync()
-        {
-            playRound(fieldBmp);
-            fieldPbox.Image = fieldBmp;
-        }
-
         private void playRoundAsync()
         {
             playRound(fieldBmp);
             this.Invoke((MethodInvoker)delegate { fieldPbox.Image = fieldBmp; });
         }
 #endif
-
-        public Control(Agent[,] PAgents, Button POneRoundBtn, SliderFR PFrameRateSlider, CheckBox PGoCBox, float[] PFrameRates)
-        {
-            agents = PAgents;
-            oneRoundBtn = POneRoundBtn;
-            frameRateSlider = PFrameRateSlider;
-            goCBox = PGoCBox;
-            frameRates = PFrameRates;
-        }
     }
 }

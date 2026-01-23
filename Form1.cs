@@ -14,7 +14,8 @@ namespace PrisonerDilemma
     public partial class Form1 : Form
     {   // Compile time parameters
         const int agentPx = 50;   // The number of pixels on an agent's side
-        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, -1 };
+        public const int MaxFR = 1000; // Special value to indicate maximum frame rate (background processing)
+        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, MaxFR };
 
         readonly Agent[,] agents;
         readonly View view;
@@ -40,8 +41,27 @@ namespace PrisonerDilemma
             game = new Game();
             games = new Games(agents, torroidalFieldCBox, game);  // We need this before control so that control can hook up the event
             games.RoundPlayed += view.OnDraw; // Hook up the event to play a round when drawing
-            control = new Control(agents, oneRoundBtn, games);
-            //control = new Control(agents, oneRoundBtn, frameRateSlider, goCBox, frameRates);
+
+            #region Initialise the control slider (Framerate)
+            SliderConstruction frameRateConstruction = new SliderConstruction
+            {
+                Name = "Frame rate",
+                TrackBar = frameRateTrackBar,
+                TextBox = frameRateTbox,
+                Label = frameRateLabel,
+                MinValue = 0F,
+                InitialValue = 0F,
+                MaxValue = frameRates.Length - 1,
+                NPosns = frameRates.Length,
+                TextFormat = "",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            frameRateSlider = new SliderFR(frameRateConstruction, frameRates);
+            #endregion
+
+            control = new Control(agents, frameRateSlider, goCBox, oneRoundBtn, frameRates, games);
 
             #region Initialise the init sliders
             SliderConstruction minConstruction = new SliderConstruction
@@ -98,24 +118,6 @@ namespace PrisonerDilemma
 
             init = new Init(minSlider, maxSlider, shapeSlider, agents, view);
 
-            #region Initialise the control slider (Framerate)
-            SliderConstruction frameRateConstruction = new SliderConstruction
-            {
-                Name = "Frame rate",
-                TrackBar = frameRateTrackBar,
-                TextBox = frameRateTbox,
-                Label = frameRateLabel,
-                MinValue = 0F,
-                InitialValue = 0F,
-                MaxValue = 1F,
-                NPosns = frameRates.Length - 1,
-                TextFormat = "F1",
-                InitLabelText = null,
-                PermitValueChange = null,
-                ValueChanged = null
-            };
-            frameRateSlider = new SliderFR(frameRateConstruction);
-            #endregion
 
             SliderConstruction noiseConstruction = new SliderConstruction
             {
@@ -151,36 +153,6 @@ namespace PrisonerDilemma
                 }
             }
             return agents1;
-        }
-
-        private void frameRateTrackBar_ValueChanged(object PSender, EventArgs PE)
-        {
-            return; // Disabled for the moment
-            // Rates are 0, 1, 1.5, 2, 3, 5, 7, 10, 15, 20 and max
-            // This will need to be moved to Control, but this is just a sandpit
-            int newPosn = frameRateTrackBar.Value;
-            float newFrameRate = frameRates[newPosn];
-            frameRateTbox.Text = newFrameRate.ToString();
-            timer1.Stop();
-            // !!! stopBg();
-            // If the frame rate is zero, wait for another update
-            if (newFrameRate == 0F)
-            {
-                return;
-            }
-
-            // If the new frame rate is <100, calculate the frequency
-            if (newFrameRate < 100)
-            {
-                int ms = (int)(1000 / newFrameRate);
-                timer1.Interval = ms;
-                timer1.Start();
-            }
-            else
-            {
-                // If it's max, assign to another thread
-                // !!! startBg();
-            }
         }
 
         private void noiseTrackBar_Scroll(object PSender, EventArgs PE)
