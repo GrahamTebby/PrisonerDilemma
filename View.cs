@@ -14,19 +14,21 @@ namespace PrisonerDilemma
         // Local references to external objects
         readonly private PictureBox fieldPbox;
         readonly private Agent[,] agents;
+        readonly private TextBox frameCountTbox;
         readonly private Bitmap fieldBmp;
         readonly private Graphics gField;
 
-        public View(PictureBox PFieldPbox, Agent[,] PAgents)
+        public View(PictureBox PFieldPbox, Agent[,] PAgents, TextBox PFrameCountTbox)
         {
             fieldPbox = PFieldPbox;
             agents = PAgents;
+            frameCountTbox = PFrameCountTbox;
             // Initialise the bitmap and graphics object
             fieldBmp = new Bitmap(fieldPbox.Width, fieldPbox.Height);
             gField = Graphics.FromImage(fieldBmp);
         }
 
-        public void OnDraw(object PSender, EventArgs PE)
+        public void OnDraw(object PSender, FrameCountEventArgs? PE)
         {   // Tell each agent to draw itself
             // Multiple events subscribe to this, possibly from a background thread
             if (fieldPbox.InvokeRequired)   // Is it from the HMI thread?
@@ -45,6 +47,7 @@ namespace PrisonerDilemma
                 }
             }
             fieldPbox.Image = fieldBmp;
+            frameCountTbox.Text = PE?.FrameCount.ToString();
             fieldPbox.Invalidate();
         }
     }

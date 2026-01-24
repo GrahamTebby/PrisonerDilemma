@@ -9,24 +9,28 @@ namespace PrisonerDilemma
 {
     internal class Games
     {
-        public event EventHandler? RoundPlayed;
+        public event EventHandler<FrameCountEventArgs>? RoundPlayed;
         readonly private Agent[,] agents;
         readonly private CheckBox torroidalField;
+        readonly FrameCountEventArgs frameCountEventArgs;
         private Game game;
-        
+        private TextBox? frameCountTbox;
+        private int nx, ny;
+
         public Games(Agent[,] PAgents, CheckBox PTorroidalFieldCbox, Game PGame)
         {
             agents = PAgents;
             game = PGame;
             torroidalField = PTorroidalFieldCbox;
+            frameCountEventArgs = new FrameCountEventArgs(0);
+            nx = agents.GetLength(0);
+            ny = agents.GetLength(1);
         }
 
         internal void PlayRound(object PSender, EventArgs PE)
         {
-            int nx = agents.GetLength(0);
-            int ny = agents.GetLength(1);
-
-            initAgents(nx, ny); // Initialise the agents for the round
+            frameCountEventArgs.FrameCount += 1;
+            initAgents(); // Initialise the agents for the round
 
             if (torroidalField.Checked)
             {   
@@ -39,15 +43,15 @@ namespace PrisonerDilemma
             
             finaliseRound(nx, ny);      // Finalise the round for all agents
 
-            RoundPlayed?.Invoke(this, EventArgs.Empty);
+            RoundPlayed?.Invoke(this, frameCountEventArgs);
         }
 
 
-        private void initAgents(int PNx, int PNy)
+        private void initAgents()
         {   // Initialise all agents for the round
-            for (int ix = 0; ix < PNx; ix++)
+            for (int ix = 0; ix < nx; ix++)
             {
-                for (int iy = 0; iy < PNy; iy++)
+                for (int iy = 0; iy < ny; iy++)
                 {
                     Agent currentAgent = agents[ix, iy];
                     currentAgent.InitRound();
@@ -120,6 +124,14 @@ namespace PrisonerDilemma
                 }
             }
         }
+    }
 
+    public class FrameCountEventArgs : EventArgs
+    {
+        public int FrameCount { get; set; }
+        public FrameCountEventArgs(int PFrameCount)
+        {
+            FrameCount = PFrameCount;
+        }
     }
 }

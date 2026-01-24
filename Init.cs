@@ -13,7 +13,7 @@ namespace PrisonerDilemma
         Slider minSlider, maxSlider, shapeSlider;
         Agent[,] agents;
         public bool Enable { get { return _enable; } set { setEnable(value); } }
-        public event EventHandler? InitChanged;
+        public event EventHandler<FrameCountEventArgs>? InitChanged;
 
         private bool _enable = true;
 
@@ -58,7 +58,7 @@ namespace PrisonerDilemma
                 }
             }
 
-            InitChanged?.Invoke(this, EventArgs.Empty);
+            InitChanged?.Invoke(this, null);
         }
     }
 }

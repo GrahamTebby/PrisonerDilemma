@@ -7,7 +7,7 @@ namespace PrisonerDilemma
 {
     public partial class Form1 : Form
     {   // Compile time parameters
-        const int agentPx = 5;   // The number of pixels on an agent's side
+        const int agentPx = 10;   // The number of pixels on an agent's side
 
         // Fields for initialisation
         readonly Slider minSlider, maxSlider, shapeSlider;   // Sliders for init
@@ -39,7 +39,7 @@ namespace PrisonerDilemma
             adjustFieldPboxSize(fieldSize);
             
             agents = initAgentArray(fieldSize); // Cnstruct the agents array, needed before view and control
-            view = new View(fieldPbox, agents);
+            view = new View(fieldPbox, agents, fCountTbox);
             game = new Game();
             games = new Games(agents, torroidalFieldCBox, game);  // Control needs to hook games.PlayRound to button event
             games.RoundPlayed += view.OnDraw; // Hook up the event to play a round when drawing

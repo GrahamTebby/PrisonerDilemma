@@ -77,6 +77,8 @@
             this.frameRateTrackBar = new System.Windows.Forms.TrackBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.torroidalFieldCBox = new System.Windows.Forms.CheckBox();
+            this.fCountTbox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.rewardTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.temptTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.suckerTrackBar)).BeginInit();
@@ -399,7 +401,7 @@
             // initBtn
             // 
             this.initBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.initBtn.Location = new System.Drawing.Point(1040, 790);
+            this.initBtn.Location = new System.Drawing.Point(832, 792);
             this.initBtn.Name = "initBtn";
             this.initBtn.Size = new System.Drawing.Size(63, 23);
             this.initBtn.TabIndex = 31;
@@ -562,12 +564,33 @@
             this.torroidalFieldCBox.Text = "Torroidal field";
             this.torroidalFieldCBox.UseVisualStyleBackColor = true;
             // 
+            // fCountTbox
+            // 
+            this.fCountTbox.BackColor = System.Drawing.Color.White;
+            this.fCountTbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.fCountTbox.Location = new System.Drawing.Point(1053, 795);
+            this.fCountTbox.Name = "fCountTbox";
+            this.fCountTbox.ReadOnly = true;
+            this.fCountTbox.Size = new System.Drawing.Size(50, 13);
+            this.fCountTbox.TabIndex = 42;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(1001, 797);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(46, 13);
+            this.label7.TabIndex = 43;
+            this.label7.Text = "Frame #";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1150, 829);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.fCountTbox);
             this.Controls.Add(this.torroidalFieldCBox);
             this.Controls.Add(this.oneRoundBtn);
             this.Controls.Add(this.frameRateTrackBar);
@@ -683,6 +706,8 @@
         private System.Windows.Forms.TrackBar frameRateTrackBar;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox torroidalFieldCBox;
+        private System.Windows.Forms.TextBox fCountTbox;
+        private System.Windows.Forms.Label label7;
     }
 }
 
