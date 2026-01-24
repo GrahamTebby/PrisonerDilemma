@@ -5,18 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Runtime.Remoting.Channels;
+//using System.Runtime.Remoting.Channels;
 
 namespace PrisonerDilemma
 {
     internal class View
     {
         // Local references to external objects
-        private PictureBox fieldPbox;
-        private Agent[,] agents;
-        // 
-        private Bitmap fieldBmp;
-        private Graphics gField;
+        readonly private PictureBox fieldPbox;
+        readonly private Agent[,] agents;
+        readonly private Bitmap fieldBmp;
+        readonly private Graphics gField;
 
         public View(PictureBox PFieldPbox, Agent[,] PAgents)
         {
@@ -29,12 +28,13 @@ namespace PrisonerDilemma
 
         public void OnDraw(object PSender, EventArgs PE)
         {   // Tell each agent to draw itself
-            // This might be called from a background thread
-            if (fieldPbox.InvokeRequired)
-            {   // Yes it was. Invoke on the HMI thread
+            // Multiple events subscribe to this, possibly from a background thread
+            if (fieldPbox.InvokeRequired)   // Is it from the HMI thread?
+            {   // No it was not; invoke on the HMI thread (which re-enters)
                 fieldPbox.Invoke((MethodInvoker)delegate { OnDraw(PSender, PE); });
                 return;
             }
+            // From here we are on the HMI thread
             int nx = agents.GetLength(0);
             int ny = agents.GetLength(1);
             for (int x = 0; x < nx; x++)

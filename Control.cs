@@ -6,68 +6,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+#nullable enable
 
 namespace PrisonerDilemma
 {
     internal class Control
     {
-        readonly Agent[,] agents;       // The array of agents
-        //!!!ControlEventHandler controlEventHandler;
-        private SliderFR frameRateSlider;
-        private CheckBox goCBox;
-        private Button oneRoundBtn;
-        private float[] frameRates;
-        private Games games;
-        private Timer frameTimer1;
-        private BackgroundWorker backgroundWorker1;
+        // HMI elements serviced here
+        readonly private SliderFR frameRateSlider;  // Frame rate
+        readonly private CheckBox goCBox;           // Go continuously checkbox
+        readonly private Button oneRoundBtn;        // Run a single round
+        // Other objects
+        readonly private Timer frameTimer;
+        readonly private BackgroundWorker backgroundWorker1;
+        private float currentFrameRate;
+        public event EventHandler? Play1Round;      // Event to play one round
 
-        public Control(Agent[,] PAgents, SliderFR PFrameRateSlider, CheckBox PGoCBox, Button POneRoundBtn, float[] PFrameRatesGames, Games PGames)
+        public Control(SliderFR PFrameRateSlider, CheckBox PGoCBox, Button POneRoundBtn, Games PGames)
         {
-            agents = PAgents;
             frameRateSlider = PFrameRateSlider;
             goCBox = PGoCBox;
             oneRoundBtn = POneRoundBtn;
-            frameRates = PFrameRatesGames;
-            games = PGames;
-            oneRoundBtn.Click += games.PlayRound;
             PFrameRateSlider.ValueChanged += frameRateTrackBar_ValueChanged;
-            frameTimer1 = new Timer();
-            frameTimer1.Tick += frameTimer1_Tick;
+            frameTimer = new Timer();
+            frameTimer.Tick += frameTimer1_Tick;
+            goCBox.CheckedChanged += goCboxChanged;
             backgroundWorker1 = new BackgroundWorker();
             backgroundWorker1.DoWork += backgroundWorker1_DoWork;
             backgroundWorker1.WorkerSupportsCancellation = true;
+            currentFrameRate = 0F;
+            // We want to be able to disable one round button when running continuously
+            // We prefer to keep all control logic in this class, therefore need to hook up the event here
+            // This means that we need to have access to PGames here
+            oneRoundBtn.Click += PGames.PlayRound;
         }
 
         private void frameRateTrackBar_ValueChanged(float PNewFrameRate)
         {
-            frameTimer1.Stop();
+            currentFrameRate = PNewFrameRate;
+            hmiChanged();
+        }
+
+        private void goCboxChanged(object sender, EventArgs e)
+        {
+            hmiChanged();
+        }
+
+        private void frameTimer1_Tick(object PSender, EventArgs PE)
+        {
+            Play1Round?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void hmiChanged()
+        {   // Stop everything first
+            frameTimer.Stop();
             stopBg();
 
-            // If the frame rate is zero, wait for another update
-            if (PNewFrameRate == 0F)
+            // If the frame rate is zero or the go checkbox is not checked, wait for another update
+            if (currentFrameRate == 0F || !goCBox.Checked)
             {
                 return;
             }
 
-            // If the new frame rate is <100, calculate the frequency
-            if (PNewFrameRate == Form1.MaxFR)
-            {   
+            if (currentFrameRate == Form1.MaxFR)
+            {   // Maximum frame rate, use background worker
                 startBg();
             }
             else
-            {
-                int ms = (int)(1000 / PNewFrameRate);
-                frameTimer1.Interval = ms;
-                frameTimer1.Start();
-            }
-        }
-
-        private void frameTimer1_Tick(object sender, EventArgs e)
-        {
-            games.PlayRound(this, EventArgs.Empty);
-            if (!goCBox.Checked)
-            {
-                // !!!frameTimer1.Stop();
+            {   // If the new frame rate is not Form1.MaxFR, calculate the frequency
+                int ms = (int)(1000 / currentFrameRate);
+                frameTimer.Interval = ms;
+                frameTimer.Start();
             }
         }
 
@@ -76,6 +85,7 @@ namespace PrisonerDilemma
             if (!backgroundWorker1.IsBusy)
             {
                 backgroundWorker1.RunWorkerAsync();
+                oneRoundBtn.Enabled = false;
             }
         }
 
@@ -84,6 +94,11 @@ namespace PrisonerDilemma
             if (backgroundWorker1.WorkerSupportsCancellation)
             {
                 backgroundWorker1.CancelAsync();
+                while (backgroundWorker1.IsBusy)
+                {
+                    Application.DoEvents();   // Keep the HMI responsive
+                }
+                oneRoundBtn.Enabled = true;
                 // !!! This returns immediately
                 // Need to service
                 // void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -100,7 +115,7 @@ namespace PrisonerDilemma
         {   // Do the background work here            
             while (!backgroundWorker1.CancellationPending)
             {
-                games.PlayRound(this, EventArgs.Empty);
+                Play1Round?.Invoke(this, EventArgs.Empty);   // Invoke the event to play one round
             }
             PE.Cancel = true;        
         }

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 #nullable enable
 
@@ -14,19 +8,28 @@ namespace PrisonerDilemma
     public partial class Form1 : Form
     {   // Compile time parameters
         const int agentPx = 5;   // The number of pixels on an agent's side
-        public const int MaxFR = 1000; // Special value to indicate maximum frame rate (background processing)
-        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 7, 10, 15, 20, MaxFR };
 
+        // Fields for initialisation
+        readonly Slider minSlider, maxSlider, shapeSlider;   // Sliders for init
+        readonly Init init;
+
+        // Fields for payoff
+        //readonly Slider temptSlider, rewardSlider, punishSlider, suckerSlider;
+
+        // Fields for game play
+        readonly Games games;
+        readonly private Game game;
+        readonly Slider noiseSlider;
+
+        // Fields for control
+        readonly Control control;
+        readonly SliderFR frameRateSlider;                   // Slider for control
+        public const int MaxFR = 1000; // Special value to indicate maximum frame rate (which involes background processing)
+        readonly float[] frameRates = new float[] { 0, 1, 1.5F, 2, 3, 5, 10, 20, MaxFR };   // Possible frame rates
+        
         readonly Agent[,] agents;
         readonly View view;
-        readonly private Game game;
-        readonly Games games;
-        readonly Control control;
-        readonly Init init;
-        Slider minSlider, maxSlider, shapeSlider;   // Sliders for init
-        SliderFR frameRateSlider;     // Slider for control
-        Slider noiseSlider;
-
+         
         public Form1()
         {
             InitializeComponent();
@@ -35,14 +38,12 @@ namespace PrisonerDilemma
             Size fieldSize = calculateFieldSize();
             adjustFieldPboxSize(fieldSize);
             
-            agents = initAgentArray(fieldSize); // Cnstruct the agents array
-            // Now that we have the agents array, construct the view & control
+            agents = initAgentArray(fieldSize); // Cnstruct the agents array, needed before view and control
             view = new View(fieldPbox, agents);
             game = new Game();
-            games = new Games(agents, torroidalFieldCBox, game);  // We need this before control so that control can hook up the event
+            games = new Games(agents, torroidalFieldCBox, game);  // Control needs to hook games.PlayRound to button event
             games.RoundPlayed += view.OnDraw; // Hook up the event to play a round when drawing
 
-            #region Initialise the control slider (Framerate)
             SliderConstruction frameRateConstruction = new SliderConstruction
             {
                 Name = "Frame rate",
@@ -59,11 +60,11 @@ namespace PrisonerDilemma
                 ValueChanged = null
             };
             frameRateSlider = new SliderFR(frameRateConstruction, frameRates);
-            #endregion
 
-            control = new Control(agents, frameRateSlider, goCBox, oneRoundBtn, frameRates, games);
+            control = new Control(frameRateSlider, goCBox, oneRoundBtn, games);
+            control.Play1Round += games.PlayRound; // Control needs to hook games.PlayRound to button event
 
-            #region Initialise the init sliders
+            // Initialisation of init
             SliderConstruction minConstruction = new SliderConstruction
             {
                 Name = "Min",
@@ -80,7 +81,6 @@ namespace PrisonerDilemma
                 ValueChanged = null
             };
             minSlider = new Slider(minConstruction);
-
             SliderConstruction maxConstruction = new SliderConstruction
             {
                 Name = "Max",
@@ -97,7 +97,6 @@ namespace PrisonerDilemma
                 ValueChanged = null
             };
             maxSlider = new Slider(maxConstruction);
-
             SliderConstruction shapeConstruction = new SliderConstruction
             {
                 Name = "Shape",
@@ -114,8 +113,6 @@ namespace PrisonerDilemma
                 ValueChanged = null
             };
             shapeSlider = new Slider(shapeConstruction);
-            #endregion
-
             init = new Init(minSlider, maxSlider, shapeSlider, agents, view);
 
 
@@ -137,15 +134,15 @@ namespace PrisonerDilemma
             noiseSlider = new Slider(noiseConstruction);
         }
 
-        private Agent[,] initAgentArray(Size fieldSize)
+        private Agent[,] initAgentArray(Size PFieldSize)
         {
             Size agent1Size = new Size(agentPx, agentPx);
             // Initialise the agents array
-            Agent[,] agents1 = new Agent[fieldSize.Width, fieldSize.Height];
-            for (int x = 0; x < fieldSize.Width; x++)
+            Agent[,] agents1 = new Agent[PFieldSize.Width, PFieldSize.Height];
+            for (int x = 0; x < PFieldSize.Width; x++)
             {
                 Point p = new Point(x * agentPx, 0);
-                for (int y = 0; y < fieldSize.Height; y++)
+                for (int y = 0; y < PFieldSize.Height; y++)
                 {
                     p.Y = y * agentPx;
                     Rectangle agentRect = new Rectangle(p, agent1Size);
@@ -171,14 +168,15 @@ namespace PrisonerDilemma
         }
 
         private Size calculateFieldSize()
-        {
+        {   // Calculates the field size (the number of agents in each direction)
+            //  based on the size of fieldPbox and agentPx
             int numAgentsX = fieldPbox.Width / agentPx;
             int numAgentsY = fieldPbox.Height / agentPx;
             return new Size(numAgentsX, numAgentsY);
         }
 
         private void adjustFieldPboxSize(Size PFieldSize)
-        {
+        {   // Adjusts the size of fieldPbox to fit an exact number of agents
             fieldPbox.Width = PFieldSize.Width * agentPx;
             fieldPbox.Height = PFieldSize.Height * agentPx;
         }

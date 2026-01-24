@@ -27,7 +27,7 @@ namespace PrisonerDilemma
             PShapeSlider.ValueChanged = onSliderChanged;
             // Don't have the delegates for PermitValueChange for now
             agents = PAgents;
-            InitChanged += PView.OnDraw; // !!! Subscribe the view to the InitChanged event
+            InitChanged += PView.OnDraw;
         }
 
         private void onSliderChanged(float PNewValue)
