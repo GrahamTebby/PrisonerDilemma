@@ -8,9 +8,30 @@ namespace PrisonerDilemma
 {
     internal class Payoff
     {
-        public float Tempt = 7;      // Temptation to defect
-        public float Reward = 5;     // Reward for mutual cooperation
-        public float Punish = 1;     // Punishment for mutual defection
-        public float Sucker = 0;     // Sucker's payoff
+        readonly private Slider temptSlider;
+        readonly private Slider rewardSlider;
+        readonly private Slider punishSlider;
+        readonly private Slider suckerSlider;
+
+        public float Tempt { get { return temptSlider.Value; } set { } }
+        public float Reward { get { return rewardSlider.Value; } set { } }
+        public float Punish { get { return punishSlider.Value; } set { } }
+        public float Sucker { get { return suckerSlider.Value; } set { } }
+
+        public Payoff(PayoffConstruction P)
+        {
+            temptSlider = P.TemptSlider;
+            rewardSlider = P.RewardSlider;
+            punishSlider = P.PunishSlider;
+            suckerSlider = P.SuckerSlider;
+        }
+    }
+
+    public struct PayoffConstruction
+    {
+        public Slider TemptSlider;
+        public Slider RewardSlider;
+        public Slider PunishSlider;
+        public Slider SuckerSlider;
     }
 }

@@ -8,7 +8,8 @@ namespace PrisonerDilemma
 {
     internal struct Result1
     {
-        public float Winnings;
-        public float P;
+        public float MyWinnings;
+        public float HisWinnings;
+        public float HisP;
     }
 }

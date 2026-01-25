@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
+using System;
 
 namespace PrisonerDilemma
 {
@@ -40,8 +40,27 @@ namespace PrisonerDilemma
         }
 
         public void FinaliseRound()
-        {   // !!! For now, average P out
-            P = results.Sum(PR => PR.P) / results.Count;
+        {
+            // Called at the end of each round to update P based on the results
+            if (results.Count == 0)
+                return;
+            float numerator = 0F;
+            float denominator = 0F;
+            foreach (Result1 result in results)
+            {
+                numerator += (result.HisP - P) * (result.HisWinnings - result.MyWinnings);
+                denominator += Math.Abs(result.MyWinnings - result.HisWinnings);
+            }
+            if (denominator > 1E-6F)
+            {
+                float alpha = 0.8F; // !!! Needs connecting to UI.
+                float pDelta = numerator / denominator;
+                P += (1-alpha) * pDelta;
+                if (P < 0F)
+                    P = 0F;
+                else if (P > 1F)
+                    P = 1F;
+            }
         }
 
         public void Draw(Graphics PG)

@@ -14,7 +14,8 @@ namespace PrisonerDilemma
         readonly Init init;
 
         // Fields for payoff
-        //readonly Slider temptSlider, rewardSlider, punishSlider, suckerSlider;
+        readonly Payoff payoff;
+        readonly Slider temptSlider, rewardSlider, punishSlider, suckerSlider;
 
         // Fields for game play
         readonly Games games;
@@ -40,7 +41,86 @@ namespace PrisonerDilemma
             
             agents = initAgentArray(fieldSize); // Cnstruct the agents array, needed before view and control
             view = new View(fieldPbox, agents, fCountTbox);
-            game = new Game();
+
+            // Initialisation of Payoff
+            SliderConstruction temptConstruction = new SliderConstruction
+            {
+                Name = "Temptation",
+                TrackBar = temptTrackBar,
+                TextBox = temptTbox,
+                Label = temptLabel,
+                MinValue = 0F,
+                InitialValue = 7F,
+                MaxValue = 10F,
+                NPosns = 101,
+                TextFormat = "F1",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            temptSlider = new Slider(temptConstruction);
+
+            SliderConstruction rewardConstruction = new SliderConstruction
+            {
+                Name = "Reward",
+                TrackBar = rewardTrackBar,
+                TextBox = rewardTbox,
+                Label = rewardLabel,
+                MinValue = 0F,
+                InitialValue = 5F,
+                MaxValue = 10F,
+                NPosns = 101,
+                TextFormat = "F1",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            rewardSlider = new Slider(rewardConstruction);
+
+            SliderConstruction punishConstruction = new SliderConstruction
+            {
+                Name = "Punishment",
+                TrackBar = punishTrackBar,
+                TextBox = punishTbox,
+                Label = punishLabel,
+                MinValue = 0F,
+                InitialValue = 3F,
+                MaxValue = 10F,
+                NPosns = 101,
+                TextFormat = "F1",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            punishSlider = new Slider(punishConstruction);
+
+            SliderConstruction suckerConstruction = new SliderConstruction
+            {
+                Name = "Sucker",
+                TrackBar = suckerTrackBar,
+                TextBox = suckerTbox,
+                Label = suckerLabel,
+                MinValue = 0F,
+                InitialValue = 0F,
+                MaxValue = 10F,
+                NPosns = 101,
+                TextFormat = "F1",
+                InitLabelText = null,
+                PermitValueChange = null,
+                ValueChanged = null
+            };
+            suckerSlider = new Slider(suckerConstruction);
+
+            PayoffConstruction payoffConstruction = new PayoffConstruction
+            {
+                TemptSlider = temptSlider,
+                RewardSlider = rewardSlider,
+                PunishSlider = punishSlider,
+                SuckerSlider = suckerSlider
+            };
+            payoff = new Payoff(payoffConstruction);
+
+            game = new Game(payoff);
             games = new Games(agents, torroidalFieldCBox, game);  // Control needs to hook games.PlayRound to button event
             games.RoundPlayed += view.OnDraw; // Hook up the event to play a round when drawing
 
@@ -64,7 +144,7 @@ namespace PrisonerDilemma
             control = new Control(frameRateSlider, goCBox, oneRoundBtn, games);
             control.Play1Round += games.PlayRound; // Control needs to hook games.PlayRound to button event
 
-            // Initialisation of init
+            // Initialisation of Init
             SliderConstruction minConstruction = new SliderConstruction
             {
                 Name = "Min",
@@ -114,7 +194,6 @@ namespace PrisonerDilemma
             };
             shapeSlider = new Slider(shapeConstruction);
             init = new Init(minSlider, maxSlider, shapeSlider, agents, view);
-
 
             SliderConstruction noiseConstruction = new SliderConstruction
             {

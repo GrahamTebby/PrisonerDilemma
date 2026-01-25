@@ -14,7 +14,7 @@ namespace PrisonerDilemma
         Agent[,] agents;
         public bool Enable { get { return _enable; } set { setEnable(value); } }
         public event EventHandler<FrameCountEventArgs>? InitChanged;
-
+        private FrameCountEventArgs frameCountEventArgs = new FrameCountEventArgs(-1);
         private bool _enable = true;
 
         public Init(Slider PMinSlider, Slider PMaxSlider, Slider PShapeSlider, Agent[,] PAgents, View PView)
@@ -58,7 +58,7 @@ namespace PrisonerDilemma
                 }
             }
 
-            InitChanged?.Invoke(this, null);
+            InitChanged?.Invoke(this, frameCountEventArgs);
         }
     }
 }

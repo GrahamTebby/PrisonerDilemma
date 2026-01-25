@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.label1 = new System.Windows.Forms.Label();
+            this.temptLabel = new System.Windows.Forms.Label();
             this.rewardTrackBar = new System.Windows.Forms.TrackBar();
             this.temptTrackBar = new System.Windows.Forms.TrackBar();
             this.suckerTrackBar = new System.Windows.Forms.TrackBar();
             this.punishTrackBar = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.temptTB = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.rewardTB = new System.Windows.Forms.TextBox();
+            this.rewardLabel = new System.Windows.Forms.Label();
+            this.punishLabel = new System.Windows.Forms.Label();
+            this.suckerLabel = new System.Windows.Forms.Label();
+            this.temptTbox = new System.Windows.Forms.TextBox();
+            this.suckerTbox = new System.Windows.Forms.TextBox();
+            this.punishTbox = new System.Windows.Forms.TextBox();
+            this.rewardTbox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.trpsCbox = new System.Windows.Forms.CheckBox();
             this.trpsPbox = new System.Windows.Forms.PictureBox();
@@ -94,15 +94,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.frameRateTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // temptLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(238, 706);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 17);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Temptation";
+            this.temptLabel.AutoSize = true;
+            this.temptLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.temptLabel.Location = new System.Drawing.Point(238, 706);
+            this.temptLabel.Name = "temptLabel";
+            this.temptLabel.Size = new System.Drawing.Size(79, 17);
+            this.temptLabel.TabIndex = 4;
+            this.temptLabel.Text = "Temptation";
             // 
             // rewardTrackBar
             // 
@@ -152,67 +152,68 @@
             this.punishTrackBar.TickFrequency = 10;
             this.punishTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
-            // label2
+            // rewardLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(261, 734);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 17);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Reward";
+            this.rewardLabel.AutoSize = true;
+            this.rewardLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rewardLabel.Location = new System.Drawing.Point(261, 734);
+            this.rewardLabel.Name = "rewardLabel";
+            this.rewardLabel.Size = new System.Drawing.Size(56, 17);
+            this.rewardLabel.TabIndex = 10;
+            this.rewardLabel.Text = "Reward";
             // 
-            // label3
+            // punishLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(235, 762);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 17);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Punishment";
+            this.punishLabel.AutoSize = true;
+            this.punishLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.punishLabel.Location = new System.Drawing.Point(235, 762);
+            this.punishLabel.Name = "punishLabel";
+            this.punishLabel.Size = new System.Drawing.Size(82, 17);
+            this.punishLabel.TabIndex = 4;
+            this.punishLabel.Text = "Punishment";
             // 
-            // label4
+            // suckerLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(265, 790);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 17);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Sucker";
+            this.suckerLabel.AutoSize = true;
+            this.suckerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.suckerLabel.Location = new System.Drawing.Point(265, 790);
+            this.suckerLabel.Name = "suckerLabel";
+            this.suckerLabel.Size = new System.Drawing.Size(52, 17);
+            this.suckerLabel.TabIndex = 10;
+            this.suckerLabel.Text = "Sucker";
             // 
-            // temptTB
+            // temptTbox
             // 
-            this.temptTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.temptTB.Location = new System.Drawing.Point(415, 706);
-            this.temptTB.Name = "temptTB";
-            this.temptTB.Size = new System.Drawing.Size(28, 20);
-            this.temptTB.TabIndex = 11;
+            this.temptTbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.temptTbox.HideSelection = false;
+            this.temptTbox.Location = new System.Drawing.Point(415, 706);
+            this.temptTbox.Name = "temptTbox";
+            this.temptTbox.Size = new System.Drawing.Size(28, 20);
+            this.temptTbox.TabIndex = 11;
             // 
-            // textBox1
+            // suckerTbox
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Location = new System.Drawing.Point(414, 790);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(28, 20);
-            this.textBox1.TabIndex = 12;
+            this.suckerTbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.suckerTbox.Location = new System.Drawing.Point(414, 790);
+            this.suckerTbox.Name = "suckerTbox";
+            this.suckerTbox.Size = new System.Drawing.Size(28, 20);
+            this.suckerTbox.TabIndex = 12;
             // 
-            // textBox2
+            // punishTbox
             // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.Location = new System.Drawing.Point(414, 762);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(28, 20);
-            this.textBox2.TabIndex = 13;
+            this.punishTbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.punishTbox.Location = new System.Drawing.Point(414, 762);
+            this.punishTbox.Name = "punishTbox";
+            this.punishTbox.Size = new System.Drawing.Size(28, 20);
+            this.punishTbox.TabIndex = 13;
             // 
-            // rewardTB
+            // rewardTbox
             // 
-            this.rewardTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rewardTB.Location = new System.Drawing.Point(414, 734);
-            this.rewardTB.Name = "rewardTB";
-            this.rewardTB.Size = new System.Drawing.Size(28, 20);
-            this.rewardTB.TabIndex = 14;
+            this.rewardTbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rewardTbox.Location = new System.Drawing.Point(414, 734);
+            this.rewardTbox.Name = "rewardTbox";
+            this.rewardTbox.Size = new System.Drawing.Size(28, 20);
+            this.rewardTbox.TabIndex = 14;
             // 
             // label5
             // 
@@ -620,20 +621,20 @@
             this.Controls.Add(this.trpsPbox);
             this.Controls.Add(this.r2tsCbox);
             this.Controls.Add(this.trpsCbox);
-            this.Controls.Add(this.rewardTB);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.temptTB);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.rewardTbox);
+            this.Controls.Add(this.punishTbox);
+            this.Controls.Add(this.suckerTbox);
+            this.Controls.Add(this.temptTbox);
+            this.Controls.Add(this.suckerLabel);
+            this.Controls.Add(this.rewardLabel);
             this.Controls.Add(this.suckerTrackBar);
             this.Controls.Add(this.punishTrackBar);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.punishLabel);
             this.Controls.Add(this.rewardTrackBar);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.temptLabel);
             this.Controls.Add(this.temptTrackBar);
             this.Controls.Add(this.noiseTrackBar);
             this.Controls.Add(this.fieldPbox);
@@ -658,18 +659,17 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label temptLabel;
         private System.Windows.Forms.TrackBar rewardTrackBar;
         private System.Windows.Forms.TrackBar temptTrackBar;
         private System.Windows.Forms.TrackBar suckerTrackBar;
         private System.Windows.Forms.TrackBar punishTrackBar;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox temptTB;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox rewardTB;
+        private System.Windows.Forms.Label rewardLabel;
+        private System.Windows.Forms.Label punishLabel;
+        private System.Windows.Forms.Label suckerLabel;
+        private System.Windows.Forms.TextBox suckerTbox;
+        private System.Windows.Forms.TextBox punishTbox;
+        private System.Windows.Forms.TextBox rewardTbox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox trpsCbox;
         private System.Windows.Forms.PictureBox trpsPbox;
@@ -708,6 +708,7 @@
         private System.Windows.Forms.CheckBox torroidalFieldCBox;
         private System.Windows.Forms.TextBox fCountTbox;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox temptTbox;
     }
 }
 

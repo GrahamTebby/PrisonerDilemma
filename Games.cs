@@ -14,7 +14,6 @@ namespace PrisonerDilemma
         readonly private CheckBox torroidalField;
         readonly FrameCountEventArgs frameCountEventArgs;
         private Game game;
-        private TextBox? frameCountTbox;
         private int nx, ny;
 
         public Games(Agent[,] PAgents, CheckBox PTorroidalFieldCbox, Game PGame)
